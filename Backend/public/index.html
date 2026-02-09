@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Text Extractor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .loading { display: none; }
+        .loading.active { display: block; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">Complete Talent Development Platform</h1>
+            <p class="text-xl text-gray-600">Extract skills • Analyze gaps • Generate roadmaps • Find resources • Get job suggestions</p>
+            
+            <div class="mt-6 bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-6">
+                <h3 class="text-lg font-semibold text-blue-800 mb-3">🚀 Quick Workflow</h3>
+                <div class="flex flex-wrap justify-center gap-2 text-sm">
+                    <span class="bg-blue-500 text-white px-3 py-1 rounded-full">1. Upload Resume</span>
+                    <span class="text-gray-400">→</span>
+                    <span class="bg-green-500 text-white px-3 py-1 rounded-full">2. Extract Skills</span>
+                    <span class="text-gray-400">→</span>
+                    <span class="bg-yellow-500 text-white px-3 py-1 rounded-full">3. Analyze Role</span>
+                    <span class="text-gray-400">→</span>
+                    <span class="bg-orange-500 text-white px-3 py-1 rounded-full">4. Find Gaps</span>
+                    <span class="text-gray-400">→</span>
+                    <span class="bg-purple-500 text-white px-3 py-1 rounded-full">5. Get Roadmap</span>
+                    <span class="text-gray-400">→</span>
+                    <span class="bg-pink-500 text-white px-3 py-1 rounded-full">6. Learn & Apply</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Input Section -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-800">Input</h2>
+                
+                <!-- Tab Navigation -->
+                <div class="flex border-b mb-4">
+                    <button onclick="switchTab('text')" id="textTab" class="px-4 py-2 border-b-2 border-blue-500 text-blue-600 font-medium">Text</button>
+                    <button onclick="switchTab('pdf')" id="pdfTab" class="px-4 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800">PDF</button>
+                    <button onclick="switchTab('ocr')" id="ocrTab" class="px-4 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800">OCR</button>
+                    <button onclick="switchTab('role')" id="roleTab" class="px-4 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800">Role Analysis</button>
+                    <button onclick="switchTab('gap')" id="gapTab" class="px-4 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800">Skill Gap</button>
+                    <button onclick="switchTab('roadmap')" id="roadmapTab" class="px-4 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800">Learning Roadmap</button>
+                    <button onclick="switchTab('resources')" id="resourcesTab" class="px-4 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800">Resources</button>
+                    <button onclick="switchTab('jobs')" id="jobsTab" class="px-4 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800">Job Suggestions</button>
+                </div>
+
+                <!-- Text Input -->
+                <div id="textInput" class="tab-content">
+                    <textarea id="resumeText" rows="15" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Paste raw resume text here..."></textarea>
+                    <button onclick="processText()" class="mt-4 w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200">Process Text</button>
+                    
+                    <div class="mt-4 flex gap-2">
+                        <button onclick="autoAnalyzeSkills()" class="flex-1 bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition duration-200">Analyze Skills →</button>
+                        <button onclick="generateFullReport()" class="flex-1 bg-purple-500 text-white py-2 px-4 rounded-md hover:bg-purple-600 transition duration-200">Full Report</button>
+                    </div>
+                </div>
+
+                <!-- PDF Upload -->
+                <div id="pdfInput" class="tab-content hidden">
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                        <input type="file" id="pdfFile" accept=".pdf" class="hidden" onchange="handlePdfUpload(this)">
+                        <label for="pdfFile" class="cursor-pointer">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                            </svg>
+                            <p class="mt-2 text-sm text-gray-600">Click to upload PDF resume</p>
+                        </label>
+                        <div id="pdfInfo" class="hidden mt-4">
+                            <p class="text-sm text-gray-600">Selected: <span id="pdfName" class="font-medium"></span></p>
+                        </div>
+                    </div>
+                    <button onclick="processPdf()" class="mt-4 w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200">Process PDF</button>
+                    
+                    <div class="mt-4 flex gap-2">
+                        <button onclick="autoAnalyzeSkills()" class="flex-1 bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition duration-200">Analyze Skills →</button>
+                        <button onclick="generateFullReport()" class="flex-1 bg-purple-500 text-white py-2 px-4 rounded-md hover:bg-purple-600 transition duration-200">Full Report</button>
+                    </div>
+                </div>
+
+                <!-- OCR Upload -->
+                <div id="ocrInput" class="tab-content hidden">
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                        <input type="file" id="imageFile" accept="image/*" class="hidden" onchange="handleImageUpload(this)">
+                        <label for="imageFile" class="cursor-pointer">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            <p class="mt-2 text-sm text-gray-600">Click to upload image or drag and drop</p>
+                            <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                        </label>
+                    </div>
+                    <div id="imageInfo" class="mt-4 hidden">
+                        <p class="text-sm text-gray-600">Selected: <span id="imageName"></span></p>
+                        <button onclick="processOcr()" class="mt-2 w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200">Process Image (OCR)</button>
+                        
+                        <div class="mt-4 flex gap-2">
+                            <button onclick="autoAnalyzeSkills()" class="flex-1 bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition duration-200">Analyze Skills →</button>
+                            <button onclick="generateFullReport()" class="flex-1 bg-purple-500 text-white py-2 px-4 rounded-md hover:bg-purple-600 transition duration-200">Full Report</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Role Analysis -->
+                <div id="roleInput" class="tab-content hidden">
+                    <div class="space-y-4">
+                        <div>
+                            <label for="jobRole" class="block text-sm font-medium text-gray-700 mb-2">Job Role</label>
+                            <input type="text" id="jobRole" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="e.g., Frontend Developer, Data Scientist, DevOps Engineer">
+                        </div>
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                            <h4 class="font-semibold text-blue-800 mb-2">Supported Roles:</h4>
+                            <ul class="text-sm text-blue-700 space-y-1">
+                                <li>• Frontend Developer</li>
+                                <li>• Backend Developer</li>
+                                <li>• Full Stack Developer</li>
+                                <li>• Data Scientist</li>
+                                <li>• DevOps Engineer</li>
+                                <li>• Mobile Developer</li>
+                            </ul>
+                        </div>
+                        <button onclick="analyzeRole()" class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200">Analyze Role</button>
+                    </div>
+                </div>
+
+                <!-- Skill Gap Analysis -->
+                <div id="gapInput" class="tab-content hidden">
+                    <div class="space-y-4">
+                        <div>
+                            <label for="candidateSkills" class="block text-sm font-medium text-gray-700 mb-2">Candidate Skills (JSON array)</label>
+                            <textarea id="candidateSkills" rows="6" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder='["JavaScript", "React", "Node.js", "Git"]'></textarea>
+                        </div>
+                        <div>
+                            <label for="roleRequirements" class="block text-sm font-medium text-gray-700 mb-2">Role Requirements (JSON)</label>
+                            <textarea id="roleRequirements" rows="8" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder='{
+  "core_skills": ["JavaScript", "React", "Git"],
+  "secondary_skills": ["TypeScript", "Node.js", "CSS"],
+  "skill_levels": {
+    "beginner": ["Git", "CSS"],
+    "intermediate": ["JavaScript", "React"],
+    "advanced": ["TypeScript", "Node.js"]
+  }
+}'></textarea>
+                        </div>
+                        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                            <h4 class="font-semibold text-yellow-800 mb-2">Instructions:</h4>
+                            <ul class="text-sm text-yellow-700 space-y-1">
+                                <li>• Enter candidate skills as a JSON array</li>
+                                <li>• Paste role requirements from the Role Analysis tab</li>
+                                <li>• System will find matches, gaps, and calculate readiness score</li>
+                            </ul>
+                        </div>
+                        <button onclick="analyzeSkillGap()" class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200">Analyze Skill Gap</button>
+                    </div>
+                </div>
+
+                <!-- Learning Roadmap -->
+                <div id="roadmapInput" class="tab-content hidden">
+                    <div class="space-y-4">
+                        <div>
+                            <label for="missingSkills" class="block text-sm font-medium text-gray-700 mb-2">Missing Skills (JSON array)</label>
+                            <textarea id="missingSkills" rows="6" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder='["TypeScript", "Docker", "AWS", "GraphQL"]'></textarea>
+                        </div>
+                        <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                            <h4 class="font-semibold text-green-800 mb-2">Roadmap Features:</h4>
+                            <ul class="text-sm text-green-700 space-y-1">
+                                <li>• Organized into 6-8 weekly milestones</li>
+                                <li>• 2-3 skills per week maximum</li>
+                                <li>• Sorted by difficulty and prerequisites</li>
+                                <li>• Practical learning outcomes</li>
+                                <li>• Estimated completion time</li>
+                            </ul>
+                        </div>
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                            <h4 class="font-semibold text-blue-800 mb-2">Pro Tip:</h4>
+                            <p class="text-sm text-blue-700">Copy missing skills from the Skill Gap analysis results to generate a personalized learning plan!</p>
+                        </div>
+                        <button onclick="generateRoadmap()" class="w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition duration-200">Generate Learning Roadmap</button>
+                    </div>
+                </div>
+
+                <!-- Resource Recommendations -->
+                <div id="resourcesInput" class="tab-content hidden">
+                    <div class="space-y-4">
+                        <div>
+                            <label for="skillsArray" class="block text-sm font-medium text-gray-700 mb-2">Skills (JSON array)</label>
+                            <textarea id="skillsArray" rows="6" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder='["JavaScript", "React", "Node.js", "Python", "Docker"]'></textarea>
+                        </div>
+                        <div class="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                            <h4 class="font-semibold text-purple-800 mb-2">Resource Features:</h4>
+                            <ul class="text-sm text-purple-700 space-y-1">
+                                <li>• 1-2 beginner-friendly resources per skill</li>
+                                <li>• Mix of free content: YouTube, docs, tutorials</li>
+                                <li>• Curated learning platforms and courses</li>
+                                <li>• Fallback search links for unknown skills</li>
+                                <li>• Real, working resource links</li>
+                            </ul>
+                        </div>
+                        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                            <h4 class="font-semibold text-yellow-800 mb-2">Pro Tip:</h4>
+                            <p class="text-sm text-yellow-700">Copy skills from any analysis result to get personalized learning resources!</p>
+                        </div>
+                        <button onclick="recommendResources()" class="w-full bg-purple-500 text-white py-2 px-4 rounded-md hover:bg-purple-600 transition duration-200">Get Resources</button>
+                    </div>
+                </div>
+
+                <!-- Job Suggestions -->
+                <div id="jobsInput" class="tab-content hidden">
+                    <div class="space-y-4">
+                        <div>
+                            <label for="candidateSkills" class="block text-sm font-medium text-gray-700 mb-2">Candidate Skills (JSON array)</label>
+                            <textarea id="candidateSkills" rows="6" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder='["JavaScript", "React", "Node.js", "Python", "Git", "AWS"]'></textarea>
+                        </div>
+                        <div class="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                            <h4 class="font-semibold text-orange-800 mb-2">Job Suggestion Features:</h4>
+                            <ul class="text-sm text-orange-700 space-y-1">
+                                <li>• 3-5 realistic job suggestions based on skills</li>
+                                <li>• Detailed reasoning for each recommendation</li>
+                                <li>• Growth opportunities and career paths</li>
+                                <li>• Smart skill matching algorithm</li>
+                                <li>• Entry-level to senior role coverage</li>
+                            </ul>
+                        </div>
+                        <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                            <h4 class="font-semibold text-green-800 mb-2">Pro Tip:</h4>
+                            <p class="text-sm text-green-700">Copy skills from resume extraction or skill gap analysis to get personalized job recommendations!</p>
+                        </div>
+                        <button onclick="suggestJobs()" class="w-full bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 transition duration-200">Get Job Suggestions</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Output Section -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-semibold text-gray-800">Output</h2>
+                    <button onclick="copyJson()" id="copyBtn" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition duration-200 text-sm">Copy JSON</button>
+                </div>
+                
+                <div class="loading" id="loading">
+                    <div class="text-center py-8">
+                        <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+                        <p class="mt-2 text-gray-600">Processing...</p>
+                    </div>
+                </div>
+
+                <div id="output">
+                    <pre id="jsonOutput" class="bg-gray-100 p-4 rounded-md text-sm overflow-auto max-h-96 whitespace-pre-wrap">{
+  "job_suggestions": [
+    {
+      "title": "",
+      "reason": ""
+    }
+  ]
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-blue-800 mb-2">How it works:</h3>
+            <ol class="list-decimal list-inside text-blue-700 space-y-1">
+                <li>Extract resume skills using Text, PDF, or OCR processing</li>
+                <li>Analyze job roles to understand required skills and levels</li>
+                <li>Compare candidate skills against role requirements</li>
+                <li>Generate personalized learning roadmap for missing skills</li>
+                <li>Get curated learning resources for any skill set</li>
+                <li>Receive intelligent job suggestions based on your skills</li>
+                <li>Complete talent development and career platform</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        let currentPdfFile = null;
+        let currentImageFile = null;
+        let extractedResumeData = null;
+        let currentRoleAnalysis = null;
+        let currentSkillGap = null;
+        let currentRoadmap = null;
+        let currentResources = null;
+        let currentJobSuggestions = null;
+
+        function switchTab(tab) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // Reset tab styles
+            document.querySelectorAll('[id$="Tab"]').forEach(tabBtn => {
+                tabBtn.classList.remove('border-blue-500', 'text-blue-600');
+                tabBtn.classList.add('border-transparent', 'text-gray-600');
+            });
+            
+            // Show selected tab
+            document.getElementById(tab + 'Input').classList.remove('hidden');
+            document.getElementById(tab + 'Tab').classList.remove('border-transparent', 'text-gray-600');
+            document.getElementById(tab + 'Tab').classList.add('border-blue-500', 'text-blue-600');
+        }
+
+        function handlePdfUpload(input) {
+            const file = input.files[0];
+            if (file) {
+                currentPdfFile = file;
+                document.getElementById('pdfName').textContent = file.name;
+                document.getElementById('pdfInfo').classList.remove('hidden');
+            }
+        }
+
+        function handleImageUpload(input) {
+            const file = input.files[0];
+            if (file) {
+                currentImageFile = file;
+                document.getElementById('imageName').textContent = file.name;
+                document.getElementById('imageInfo').classList.remove('hidden');
+            }
+        }
+
+        function showLoading() {
+            document.getElementById('loading').classList.add('active');
+            document.getElementById('output').style.display = 'none';
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').classList.remove('active');
+            document.getElementById('output').style.display = 'block';
+        }
+
+        function updateOutput(data) {
+            document.getElementById('jsonOutput').textContent = JSON.stringify(data, null, 2);
+        }
+
+        function showNotification(message) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-all duration-300';
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        function autoAnalyzeSkills() {
+            if (!extractedResumeData || !extractedResumeData.skills) {
+                alert('Please extract resume skills first');
+                return;
+            }
+            
+            // Switch to role analysis tab
+            switchTab('role');
+            showNotification('Skills extracted! Now analyze a job role to compare.');
+        }
+
+        function generateFullReport() {
+            if (!extractedResumeData) {
+                alert('Please extract resume skills first');
+                return;
+            }
+            
+            const fullReport = {
+                resume_extraction: extractedResumeData,
+                timestamp: new Date().toISOString()
+            };
+            
+            updateOutput(fullReport);
+            showNotification('Full report generated!');
+        }
+
+        async function processText() {
+            const resumeText = document.getElementById('resumeText').value;
+            
+            if (!resumeText.trim()) {
+                alert('Please enter resume text');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/extract/text', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ resume_text: resumeText })
+                });
+                
+                extractedResumeData = await response.json();
+                updateOutput(extractedResumeData);
+                
+                // Auto-populate skills in other tabs
+                if (extractedResumeData.skills && extractedResumeData.skills.length > 0) {
+                    const skillsJson = JSON.stringify(extractedResumeData.skills, null, 2);
+                    document.getElementById('candidateSkills').value = skillsJson;
+                    document.getElementById('skillsArray').value = skillsJson;
+                    document.getElementById('missingSkills').value = skillsJson;
+                    
+                    // Show success notification
+                    showNotification('Resume extracted! Skills auto-populated in other tabs.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to process text');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function processPdf() {
+            if (!currentPdfFile) {
+                alert('Please select a PDF file');
+                return;
+            }
+
+            showLoading();
+            try {
+                const formData = new FormData();
+                formData.append('resume', currentPdfFile);
+
+                const response = await fetch('/api/extract/pdf', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                extractedResumeData = await response.json();
+                updateOutput(extractedResumeData);
+                
+                // Auto-populate skills in other tabs
+                if (extractedResumeData.skills && extractedResumeData.skills.length > 0) {
+                    const skillsJson = JSON.stringify(extractedResumeData.skills, null, 2);
+                    document.getElementById('candidateSkills').value = skillsJson;
+                    document.getElementById('skillsArray').value = skillsJson;
+                    document.getElementById('missingSkills').value = skillsJson;
+                    
+                    // Show success notification
+                    showNotification('PDF processed! Skills auto-populated in other tabs.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to process PDF');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function processOcr() {
+            if (!currentImageFile) {
+                alert('Please select an image file');
+                return;
+            }
+
+            showLoading();
+            try {
+                const formData = new FormData();
+                formData.append('image', currentImageFile);
+
+                const response = await fetch('/api/extract/ocr', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                extractedResumeData = await response.json();
+                updateOutput(extractedResumeData);
+                
+                // Auto-populate skills in other tabs
+                if (extractedResumeData.skills && extractedResumeData.skills.length > 0) {
+                    const skillsJson = JSON.stringify(extractedResumeData.skills, null, 2);
+                    document.getElementById('candidateSkills').value = skillsJson;
+                    document.getElementById('skillsArray').value = skillsJson;
+                    document.getElementById('missingSkills').value = skillsJson;
+                    
+                    // Show success notification
+                    showNotification('OCR processed! Skills auto-populated in other tabs.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to process image');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function analyzeRole() {
+            const jobRole = document.getElementById('jobRole').value;
+            if (!jobRole.trim()) {
+                alert('Please enter a job role');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/analyze/role', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ job_role: jobRole })
+                });
+                
+                const data = await response.json();
+                updateOutput(data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to analyze role');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function analyzeSkillGap() {
+            const candidateSkills = document.getElementById('candidateSkills').value;
+            const roleRequirements = document.getElementById('roleRequirements').value;
+            
+            if (!candidateSkills.trim() || !roleRequirements.trim()) {
+                alert('Please enter both candidate skills and role requirements');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/analyze/skill-gap', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        candidate_skills_json: candidateSkills,
+                        role_skills_json: roleRequirements
+                    })
+                });
+                
+                const data = await response.json();
+                updateOutput(data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to analyze skill gap');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function generateRoadmap() {
+            const missingSkills = document.getElementById('missingSkills').value;
+            
+            if (!missingSkills.trim()) {
+                alert('Please enter missing skills');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/generate/roadmap', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        missing_skills_array: missingSkills
+                    })
+                });
+                
+                const data = await response.json();
+                updateOutput(data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to generate learning roadmap');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function recommendResources() {
+            const skillsArray = document.getElementById('skillsArray').value;
+            
+            if (!skillsArray.trim()) {
+                alert('Please enter skills');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/recommend/resources', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        skills_array: skillsArray
+                    })
+                });
+                
+                const data = await response.json();
+                updateOutput(data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to recommend resources');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function suggestJobs() {
+            const candidateSkills = document.getElementById('candidateSkills').value;
+            
+            if (!candidateSkills.trim()) {
+                alert('Please enter candidate skills');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/suggest/jobs', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        candidate_skills_json: candidateSkills
+                    })
+                });
+                
+                const data = await response.json();
+                updateOutput(data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to suggest jobs');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        function copyJson() {
+            const jsonText = document.getElementById('jsonOutput').textContent;
+            navigator.clipboard.writeText(jsonText).then(() => {
+                const btn = document.getElementById('copyBtn');
+                const originalText = btn.textContent;
+                btn.textContent = 'Copied!';
+                btn.classList.remove('bg-green-500', 'hover:bg-green-600');
+                btn.classList.add('bg-gray-500');
+                
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.classList.remove('bg-gray-500');
+                    btn.classList.add('bg-green-500', 'hover:bg-green-600');
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
