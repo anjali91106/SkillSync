@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillSync Dashboard - Resume Analysis & Career Development</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-out {
+            animation: fadeOut 0.5s ease-in-out;
+        }
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+        }
+        .skill-tag {
+            transition: all 0.2s ease;
+        }
+        .skill-tag:hover {
+            transform: scale(1.05);
+        }
+        .loading { display: none !important; }
+        .loading.active { display: flex !important; }
+        
+        /* Center upload card when it's the only one visible */
+        .dashboard-centered {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 60vh;
+        }
+        .dashboard-centered #dashboardGrid {
+            grid-template-columns: 1fr;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dashboard-centered">
+    <!-- Navigation Header -->
+    <nav class="bg-white shadow-sm border-b border-gray-200 fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <button onclick="goBack()" class="mr-4 text-gray-500 hover:text-gray-700 transition-colors">
+                        <i class="fas fa-arrow-left text-xl"></i>
+                    </button>
+                    <div class="flex-shrink-0">
+                        <h1 class="text-2xl font-bold text-transparent bg-clip-text gradient-bg">SkillSync</h1>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="index.html" class="text-gray-500 hover:text-purple-600 px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                        <a href="dashboard.html" class="text-gray-900 hover:text-purple-600 px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button onclick="toggleMobileMenu()" class="text-gray-500 hover:text-gray-900 focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobileMenu" class="hidden md:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="index.html" class="text-gray-500 block px-3 py-2 rounded-md text-base font-medium">Home</a>
+                <a href="dashboard.html" class="text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Dashboard</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Dashboard Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-8">
+        <!-- Welcome Section -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Welcome to Your Dashboard</h1>
+            <p class="text-lg text-gray-600">Analyze your resume, identify skill gaps, and accelerate your career growth</p>
+        </div>
+
+        <!-- Dashboard Grid -->
+        <div id="dashboardGrid" class="grid md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+            
+            <!-- Resume Upload Card -->
+            <div id="resumeUploadCard" class="bg-white rounded-xl shadow-lg p-8 card-hover lg:col-span-2 xl:col-span-1">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-file-upload text-blue-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-900">Resume Upload</h3>
+                        <p class="text-gray-600 text-sm">Choose one option to submit your resume</p>
+                    </div>
+                </div>
+                
+                <!-- Upload Options -->
+                <div class="space-y-3 mb-4">
+                    <!-- Text Input Option -->
+                    <div class="border rounded-lg p-3 cursor-pointer transition-all hover:border-blue-400 hover:bg-blue-50" onclick="selectUploadOption('text')">
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" name="uploadOption" value="text" class="mr-3 text-blue-600">
+                            <div class="flex-1">
+                                <div class="flex items-center">
+                                    <i class="fas fa-keyboard text-blue-600 mr-2"></i>
+                                    <span class="font-medium text-gray-900">Text Input</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-1">Paste your resume content directly</p>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Document Upload Option -->
+                    <div class="border rounded-lg p-3 cursor-pointer transition-all hover:border-blue-400 hover:bg-blue-50" onclick="selectUploadOption('document')">
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" name="uploadOption" value="document" class="mr-3 text-blue-600">
+                            <div class="flex-1">
+                                <div class="flex items-center">
+                                    <i class="fas fa-file-alt text-blue-600 mr-2"></i>
+                                    <span class="font-medium text-gray-900">Document Upload</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-1">Upload PDF, DOC, or DOCX file</p>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- OCR Upload Option -->
+                    <div class="border rounded-lg p-3 cursor-pointer transition-all hover:border-blue-400 hover:bg-blue-50" onclick="selectUploadOption('ocr')">
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" name="uploadOption" value="ocr" class="mr-3 text-blue-600">
+                            <div class="flex-1">
+                                <div class="flex items-center">
+                                    <i class="fas fa-camera text-blue-600 mr-2"></i>
+                                    <span class="font-medium text-gray-900">OCR Upload</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-1">Upload image (JPG/PNG) for text extraction</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Dynamic Content Area -->
+                <div id="uploadContent" class="mb-4">
+                    <!-- Text Input Area -->
+                    <div id="textInputArea" class="hidden">
+                        <textarea id="resumeText" rows="6" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Paste your resume content here..."></textarea>
+                    </div>
+
+                    <!-- Document Upload Area -->
+                    <div id="documentUploadArea" class="hidden">
+                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-blue-400 transition-colors">
+                            <input type="file" id="documentFile" accept=".pdf,.doc,.docx" class="hidden" onchange="handleDocumentUpload(this)">
+                            <label for="documentFile" class="cursor-pointer">
+                                <i class="fas fa-file-pdf text-3xl text-gray-400 mb-2"></i>
+                                <p class="text-gray-600 font-medium">Click to upload document</p>
+                                <p class="text-sm text-gray-500">PDF, DOC, DOCX (MAX. 10MB)</p>
+                            </label>
+                        </div>
+                        <div id="documentInfo" class="hidden mt-2 bg-blue-50 border border-blue-200 rounded-lg p-3">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <i class="fas fa-file-alt text-blue-600 mr-2"></i>
+                                    <span class="text-sm text-gray-900" id="documentName">document.pdf</span>
+                                </div>
+                                <button onclick="removeDocument()" class="text-red-500 hover:text-red-700">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- OCR Upload Area -->
+                    <div id="ocrUploadArea" class="hidden">
+                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-blue-400 transition-colors">
+                            <input type="file" id="ocrFile" accept="image/*" class="hidden" onchange="handleOCRUpload(this)">
+                            <label for="ocrFile" class="cursor-pointer">
+                                <i class="fas fa-image text-3xl text-gray-400 mb-2"></i>
+                                <p class="text-gray-600 font-medium">Click to upload image</p>
+                                <p class="text-sm text-gray-500">JPG, PNG (MAX. 10MB)</p>
+                            </label>
+                        </div>
+                        <div id="ocrInfo" class="hidden mt-2 bg-blue-50 border border-blue-200 rounded-lg p-3">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <i class="fas fa-image text-blue-600 mr-2"></i>
+                                    <span class="text-sm text-gray-900" id="ocrName">resume.jpg</span>
+                                </div>
+                                <button onclick="removeOCR()" class="text-red-500 hover:text-red-700">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analyze Button -->
+                <button onclick="startAnalysis()" id="analyzeBtn" disabled class="w-full bg-blue-500 text-white py-3 px-4 rounded-lg hover:bg-blue-600 transition duration-200 disabled:bg-gray-300 disabled:cursor-not-allowed font-medium">
+                    <i class="fas fa-search mr-2"></i>
+                    Analyze Resume
+                </button>
+            </div>
+
+            <!-- Skill Gap Analysis Card -->
+            <div id="skillGapCard" class="bg-white rounded-xl shadow-lg p-6 card-hover hidden">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-chart-line text-green-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-900">Skill Gap Analysis</h3>
+                        <p class="text-gray-600 text-sm">Compare your skills against job requirements</p>
+                    </div>
+                </div>
+                
+                <div class="space-y-4">
+                    <!-- Existing Skills -->
+                    <div>
+                        <h4 class="font-medium text-gray-900 mb-2">Your Current Skills</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="skill-tag bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">JavaScript</span>
+                            <span class="skill-tag bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">React</span>
+                            <span class="skill-tag bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">Node.js</span>
+                            <span class="skill-tag bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">MongoDB</span>
+                            <span class="skill-tag bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">Git</span>
+                            <span class="skill-tag bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">CSS</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Missing Skills -->
+                    <div>
+                        <h4 class="font-medium text-gray-900 mb-2">Recommended Skills</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="skill-tag bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">TypeScript</span>
+                            <span class="skill-tag bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">Docker</span>
+                            <span class="skill-tag bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">AWS</span>
+                            <span class="skill-tag bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">GraphQL</span>
+                            <span class="skill-tag bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">Kubernetes</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Progress Bar -->
+                    <div>
+                        <div class="flex justify-between text-sm text-gray-600 mb-1">
+                            <span>Match Score</span>
+                            <span>72%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-green-500 h-2 rounded-full" style="width: 72%"></div>
+                        </div>
+                    </div>
+                    
+                    <button onclick="navigateToSkillGap()" class="w-full bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition duration-200">
+                        <i class="fas fa-chart-bar mr-2"></i>
+                        View Skill Gap
+                    </button>
+                </div>
+            </div>
+
+            <!-- File Format & Resume Issues Card -->
+            <div id="resumeIssuesCard" class="bg-white rounded-xl shadow-lg p-6 card-hover hidden">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-exclamation-triangle text-yellow-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-900">Resume Issues</h3>
+                        <p class="text-gray-600 text-sm">Formatting and ATS optimization suggestions</p>
+                    </div>
+                </div>
+                
+                <div class="space-y-4">
+                    <!-- Issues List -->
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                            <div>
+                                <p class="font-medium text-gray-900">Good file format</p>
+                                <p class="text-sm text-gray-600">PDF format is ATS-friendly</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <i class="fas fa-exclamation-circle text-yellow-500 mt-1 mr-3"></i>
+                            <div>
+                                <p class="font-medium text-gray-900">Complex formatting detected</p>
+                                <p class="text-sm text-gray-600">Consider using a simpler layout for better ATS parsing</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <i class="fas fa-info-circle text-blue-500 mt-1 mr-3"></i>
+                            <div>
+                                <p class="font-medium text-gray-900">Missing keywords</p>
+                                <p class="text-sm text-gray-600">Add industry-specific terms for better matching</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <i class="fas fa-times-circle text-red-500 mt-1 mr-3"></i>
+                            <div>
+                                <p class="font-medium text-gray-900">Inconsistent bullet points</p>
+                                <p class="text-sm text-gray-600">Use consistent formatting throughout</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- ATS Score -->
+                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="font-medium text-yellow-800">ATS Compatibility Score</p>
+                                <p class="text-sm text-yellow-600">Based on formatting and content analysis</p>
+                            </div>
+                            <div class="text-2xl font-bold text-yellow-800">78%</div>
+                        </div>
+                    </div>
+                    
+                    <button onclick="navigateToResumeIssues()" class="w-full bg-yellow-500 text-white py-2 px-4 rounded-lg hover:bg-yellow-600 transition duration-200">
+                        <i class="fas fa-lightbulb mr-2"></i>
+                        View Resume Issues
+                    </button>
+                </div>
+            </div>
+
+            <!-- Learning Roadmap Card -->
+            <div id="roadmapCard" class="bg-white rounded-xl shadow-lg p-6 card-hover hidden">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-route text-purple-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-900">Learning Roadmap</h3>
+                        <p class="text-gray-600 text-sm">Personalized skill development plan</p>
+                    </div>
+                </div>
+                
+                <div class="space-y-4">
+                    <!-- Learning Timeline -->
+                    <div>
+                        <h4 class="font-medium text-gray-900 mb-2">8-Week Learning Plan</h4>
+                        <div class="space-y-3">
+                            <div class="border-l-4 border-purple-500 pl-4">
+                                <div class="flex items-center justify-between">
+                                    <p class="font-medium text-gray-900">Week 1-2: TypeScript Fundamentals</p>
+                                    <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">Priority</span>
+                                </div>
+                                <p class="text-sm text-gray-600">Basic types, interfaces, and generics</p>
+                            </div>
+                            
+                            <div class="border-l-4 border-blue-500 pl-4">
+                                <div class="flex items-center justify-between">
+                                    <p class="font-medium text-gray-900">Week 3-4: Docker & Containers</p>
+                                    <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">Infrastructure</span>
+                                </div>
+                                <p class="text-sm text-gray-600">Containerization and basic orchestration</p>
+                            </div>
+                            
+                            <div class="border-l-4 border-green-500 pl-4">
+                                <div class="flex items-center justify-between">
+                                    <p class="font-medium text-gray-900">Week 5-6: AWS Cloud Services</p>
+                                    <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Cloud</span>
+                                </div>
+                                <p class="text-sm text-gray-600">EC2, S3, Lambda, and deployment</p>
+                            </div>
+                            
+                            <div class="border-l-4 border-yellow-500 pl-4">
+                                <div class="flex items-center justify-between">
+                                    <p class="font-medium text-gray-900">Week 7-8: GraphQL & APIs</p>
+                                    <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">Advanced</span>
+                                </div>
+                                <p class="text-sm text-gray-600">GraphQL schemas and API design</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Progress Overview -->
+                    <div class="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <p class="font-medium text-purple-800">Estimated Completion</p>
+                            <p class="text-sm text-purple-600">8 weeks • 10-12 hrs/week</p>
+                        </div>
+                        <div class="w-full bg-purple-200 rounded-full h-2">
+                            <div class="bg-purple-600 h-2 rounded-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <button onclick="navigateToRoadmap()" class="w-full bg-purple-500 text-white py-2 px-4 rounded-lg hover:bg-purple-600 transition duration-200">
+                        <i class="fas fa-play-circle mr-2"></i>
+                        View Roadmap
+                    </button>
+                </div>
+            </div>
+
+            <!-- Job Suggestions Card -->
+            <div id="jobSuggestionsCard" class="bg-white rounded-xl shadow-lg p-6 card-hover hidden">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-briefcase text-orange-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-900">Job Suggestions</h3>
+                        <p class="text-gray-600 text-sm">Career opportunities based on your skills</p>
+                    </div>
+                </div>
+                
+                <div class="space-y-4">
+                    <!-- Job Suggestions List -->
+                    <div class="space-y-3">
+                        <div class="border border-gray-200 rounded-lg p-4 hover:border-orange-300 transition-colors cursor-pointer">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1">
+                                    <div class="flex items-center mb-2">
+                                        <h4 class="font-semibold text-gray-900">Frontend Developer</h4>
+                                        <span class="ml-2 text-xs bg-green-100 text-green-800 px-2 py-1 rounded">92% Match</span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mb-2">Build responsive web applications using modern JavaScript frameworks</p>
+                                    <div class="flex flex-wrap gap-1">
+                                        <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">React</span>
+                                        <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">TypeScript</span>
+                                        <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">CSS</span>
+                                        <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">+2</span>
+                                    </div>
+                                </div>
+                                <div class="ml-4 text-orange-500">
+                                    <i class="fas fa-arrow-up"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg p-4 hover:border-orange-300 transition-colors cursor-pointer">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1">
+                                    <div class="flex items-center mb-2">
+                                        <h4 class="font-semibold text-gray-900">Java Developer</h4>
+                                        <span class="ml-2 text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">78% Match</span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mb-2">Develop enterprise applications and backend services using Java ecosystem</p>
+                                    <div class="flex flex-wrap gap-1">
+                                        <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">Spring</span>
+                                        <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">Microservices</span>
+                                        <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">SQL</span>
+                                        <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">+3</span>
+                                    </div>
+                                </div>
+                                <div class="ml-4 text-yellow-500">
+                                    <i class="fas fa-minus"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg p-4 hover:border-orange-300 transition-colors cursor-pointer">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1">
+                                    <div class="flex items-center mb-2">
+                                        <h4 class="font-semibold text-gray-900">Flutter Developer</h4>
+                                        <span class="ml-2 text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">65% Match</span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mb-2">Create cross-platform mobile applications with Flutter framework</p>
+                                    <div class="flex flex-wrap gap-1">
+                                        <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">Dart</span>
+                                        <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">Mobile Dev</span>
+                                        <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">UI/UX</span>
+                                        <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">+2</span>
+                                    </div>
+                                </div>
+                                <div class="ml-4 text-blue-500">
+                                    <i class="fas fa-arrow-down"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Salary Insights -->
+                    <div class="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="font-medium text-orange-800">Salary Range</p>
+                                <p class="text-sm text-orange-600">Based on your skill level and location</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-lg font-bold text-orange-800">$75K - $120K</p>
+                                <p class="text-xs text-orange-600">Annual USD</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button onclick="navigateToJobSuggestions()" class="w-full bg-orange-500 text-white py-2 px-4 rounded-lg hover:bg-orange-600 transition duration-200">
+                        <i class="fas fa-search mr-2"></i>
+                        View Job Suggestions
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div id="loadingOverlay" class="loading fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white rounded-lg p-8 max-w-sm w-full mx-4">
+                <div class="text-center">
+                    <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mb-4"></div>
+                    <p class="text-gray-900 font-medium">Analyzing your resume...</p>
+                    <p class="text-gray-600 text-sm mt-2">This may take a few seconds</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let selectedOption = null;
+        let hasContent = false;
+        let resumeData = null;
+        let analysisData = null;
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        function selectUploadOption(option) {
+            selectedOption = option;
+            
+            // Update radio button
+            document.querySelector(`input[value="${option}"]`).checked = true;
+            
+            // Hide all content areas
+            document.getElementById('textInputArea').classList.add('hidden');
+            document.getElementById('documentUploadArea').classList.add('hidden');
+            document.getElementById('ocrUploadArea').classList.add('hidden');
+            
+            // Show selected content area
+            if (option === 'text') {
+                document.getElementById('textInputArea').classList.remove('hidden');
+                checkAnalyzeButton();
+            } else if (option === 'document') {
+                document.getElementById('documentUploadArea').classList.remove('hidden');
+            } else if (option === 'ocr') {
+                document.getElementById('ocrUploadArea').classList.remove('hidden');
+            }
+        }
+
+        function handleDocumentUpload(input) {
+            const file = input.files[0];
+            if (file) {
+                document.getElementById('documentName').textContent = file.name;
+                document.getElementById('documentInfo').classList.remove('hidden');
+                hasContent = true;
+                checkAnalyzeButton();
+            }
+        }
+
+        function removeDocument() {
+            document.getElementById('documentFile').value = '';
+            document.getElementById('documentInfo').classList.add('hidden');
+            hasContent = false;
+            checkAnalyzeButton();
+        }
+
+        function handleOCRUpload(input) {
+            const file = input.files[0];
+            if (file) {
+                document.getElementById('ocrName').textContent = file.name;
+                document.getElementById('ocrInfo').classList.remove('hidden');
+                hasContent = true;
+                checkAnalyzeButton();
+            }
+        }
+
+        function removeOCR() {
+            document.getElementById('ocrFile').value = '';
+            document.getElementById('ocrInfo').classList.add('hidden');
+            hasContent = false;
+            checkAnalyzeButton();
+        }
+
+        function checkAnalyzeButton() {
+            const analyzeBtn = document.getElementById('analyzeBtn');
+            const textArea = document.getElementById('resumeText');
+            
+            if (selectedOption === 'text') {
+                hasContent = textArea.value.trim().length > 0;
+            }
+            
+            analyzeBtn.disabled = !selectedOption || !hasContent;
+        }
+
+        async function startAnalysis() {
+            if (!selectedOption || !hasContent) {
+                showNotification('Please select an option and provide content', 'error');
+                return;
+            }
+
+            // Navigate to analyzing page
+            window.location.href = 'analyzing.html';
+            
+            // Store the data for analysis after redirect
+            sessionStorage.setItem('analysisOption', selectedOption);
+            
+            if (selectedOption === 'text') {
+                sessionStorage.setItem('resumeText', document.getElementById('resumeText').value);
+            } else if (selectedOption === 'document') {
+                const file = document.getElementById('documentFile').files[0];
+                if (file) {
+                    sessionStorage.setItem('documentName', file.name);
+                    // In real implementation, you'd upload the file here
+                }
+            } else if (selectedOption === 'ocr') {
+                const file = document.getElementById('ocrFile').files[0];
+                if (file) {
+                    sessionStorage.setItem('ocrName', file.name);
+                    // In real implementation, you'd upload the image here
+                }
+            }
+        }
+
+        function navigateToSkillGap() {
+            window.location.href = 'skill-gap.html';
+        }
+
+        function navigateToRoadmap() {
+            window.location.href = 'roadmap.html';
+        }
+
+        function navigateToJobSuggestions() {
+            window.location.href = 'job-suggestions.html';
+        }
+
+        function navigateToResumeIssues() {
+            window.location.href = 'resume-issues.html';
+        }
+
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                // If no history, go to home
+                window.location.href = 'index.html';
+            }
+        }
+
+        function restoreDashboardState() {
+            const dashboardState = sessionStorage.getItem('dashboardState');
+            
+            if (dashboardState === 'analyzed') {
+                // Remove centered layout
+                document.body.classList.remove('dashboard-centered');
+                
+                // Hide upload card
+                const uploadCard = document.getElementById('resumeUploadCard');
+                if (uploadCard) {
+                    uploadCard.classList.add('hidden');
+                }
+                
+                // Show all analysis cards without animation
+                const cards = ['skillGapCard', 'resumeIssuesCard', 'roadmapCard', 'jobSuggestionsCard'];
+                cards.forEach(cardId => {
+                    const card = document.getElementById(cardId);
+                    if (card) {
+                        card.classList.remove('hidden');
+                    }
+                });
+            }
+        }
+
+        async function performAnalysis() {
+            const option = sessionStorage.getItem('analysisOption');
+            
+            try {
+                let response;
+                
+                if (option === 'text') {
+                    const text = sessionStorage.getItem('resumeText');
+                    response = await fetch('/api/extract/text', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ resume_text: text })
+                    });
+                } else if (option === 'document') {
+                    // For demo, use mock data - in real implementation upload file
+                    response = await fetch('/api/extract/pdf', {
+                        method: 'POST',
+                        body: new FormData() // Would contain file
+                    });
+                } else if (option === 'ocr') {
+                    // For demo, use mock data - in real implementation upload image
+                    response = await fetch('/api/extract/ocr', {
+                        method: 'POST',
+                        body: new FormData() // Would contain image
+                    });
+                }
+                
+                if (response.ok) {
+                    resumeData = await response.json();
+                    await performCompleteAnalysis();
+                } else {
+                    throw new Error('Analysis failed');
+                }
+            } catch (error) {
+                console.error('Analysis error:', error);
+                // Fallback to mock data for demo
+                await useMockAnalysis();
+            }
+        }
+
+        async function performCompleteAnalysis() {
+            try {
+                // Get skill gap analysis
+                const gapResponse = await fetch('/api/analyze/skill-gap', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        candidate_skills_json: JSON.stringify(resumeData.skills || []),
+                        role_skills_json: JSON.stringify(['JavaScript', 'React', 'TypeScript', 'Node.js', 'Docker', 'AWS'])
+                    })
+                });
+                
+                // Get job suggestions
+                const jobResponse = await fetch('/api/suggest/jobs', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        candidate_skills_json: JSON.stringify(resumeData.skills || [])
+                    })
+                });
+                
+                // Get learning roadmap
+                const roadmapResponse = await fetch('/api/generate/roadmap', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        missing_skills_array: JSON.stringify(['TypeScript', 'Docker', 'AWS', 'GraphQL'])
+                    })
+                });
+                
+                // Get learning resources
+                const resourcesResponse = await fetch('/api/recommend/resources', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        skills_array: JSON.stringify(['TypeScript', 'Docker', 'AWS', 'GraphQL'])
+                    })
+                });
+                
+                analysisData = {
+                    resumeData,
+                    skillGap: gapResponse.ok ? await gapResponse.json() : null,
+                    jobs: jobResponse.ok ? await jobResponse.json() : null,
+                    roadmap: roadmapResponse.ok ? await roadmapResponse.json() : null,
+                    resources: resourcesResponse.ok ? await resourcesResponse.json() : null
+                };
+                
+                updateDashboardWithRealData();
+                
+            } catch (error) {
+                console.error('Complete analysis error:', error);
+                await useMockAnalysis();
+            }
+        }
+
+        async function useMockAnalysis() {
+            // Fallback mock data
+            analysisData = {
+                resumeData: {
+                    skills: ['JavaScript', 'React', 'Node.js', 'MongoDB', 'Git', 'CSS'],
+                    experience: '5 years',
+                    education: 'Bachelor of Computer Science'
+                },
+                skillGap: {
+                    missing_skills: ['TypeScript', 'Docker', 'AWS', 'GraphQL', 'Kubernetes'],
+                    readiness_score: 72
+                },
+                jobs: {
+                    job_suggestions: [
+                        { title: 'Frontend Developer', match: 92, level: 'Mid', salary_range: '$75K-$120K' },
+                        { title: 'Java Developer', match: 78, level: 'Mid', salary_range: '$80K-$130K' },
+                        { title: 'Flutter Developer', match: 65, level: 'Junior', salary_range: '$70K-$110K' }
+                    ]
+                },
+                roadmap: {
+                    learning_plan: [
+                        { skill: 'TypeScript', duration: '2 weeks', priority: 'High' },
+                        { skill: 'Docker', duration: '2 weeks', priority: 'High' },
+                        { skill: 'AWS', duration: '2 weeks', priority: 'Medium' },
+                        { skill: 'GraphQL', duration: '2 weeks', priority: 'Low' }
+                    ]
+                },
+                resources: {
+                    resources: [
+                        { skill: 'TypeScript', links: ['https://www.typescriptlang.org/docs/', 'https://react-typescript-cheatsheet.netlify.app/'] },
+                        { skill: 'Docker', links: ['https://docs.docker.com/get-started/', 'https://www.docker.com/101-tutorial'] },
+                        { skill: 'AWS', links: ['https://aws.amazon.com/getting-started/', 'https://aws.amazon.com/training/'] },
+                        { skill: 'GraphQL', links: ['https://graphql.org/learn/', 'https://www.howtographql.com/'] }
+                    ]
+                }
+            };
+            
+            updateDashboardWithRealData();
+        }
+
+        function updateDashboardWithRealData() {
+            if (!analysisData) return;
+            
+            // Show all analysis cards
+            showAllCards();
+            
+            // Update Skill Gap Analysis Card
+            updateSkillGapCard();
+            
+            // Update Job Suggestions Card
+            updateJobSuggestionsCard();
+            
+            // Update Learning Roadmap Card
+            updateRoadmapCard();
+            
+            // Update Resume Issues Card
+            updateResumeIssuesCard();
+            
+            // Show success notification
+            showNotification('Analysis completed successfully!');
+        }
+
+        function showAllCards() {
+            // Remove centered layout and show all cards
+            const body = document.body;
+            const dashboardGrid = document.getElementById('dashboardGrid');
+            
+            // Remove centered class
+            body.classList.remove('dashboard-centered');
+            
+            // Store state in sessionStorage
+            sessionStorage.setItem('dashboardState', 'analyzed');
+            
+            // Hide the upload card with fade out animation
+            const uploadCard = document.getElementById('resumeUploadCard');
+            if (uploadCard) {
+                uploadCard.classList.add('animate-fade-out');
+                setTimeout(() => {
+                    uploadCard.classList.add('hidden');
+                }, 500); // Wait for fade out animation
+            }
+            
+            // Show all hidden cards with animation
+            const cards = ['skillGapCard', 'resumeIssuesCard', 'roadmapCard', 'jobSuggestionsCard'];
+            cards.forEach((cardId, index) => {
+                setTimeout(() => {
+                    const card = document.getElementById(cardId);
+                    if (card) {
+                        card.classList.remove('hidden');
+                        card.classList.add('animate-fade-in');
+                    }
+                }, index * 200 + 300); // Start after upload card fades out
+            });
+        }
+
+        function updateSkillGapCard() {
+            const { resumeData, skillGap } = analysisData;
+            
+            // Update current skills
+            const currentSkillsHtml = (resumeData.skills || []).map(skill => 
+                `<span class="skill-tag bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">${skill}</span>`
+            ).join('');
+            
+            const currentSkillsElement = document.querySelector('#currentSkills');
+            if (currentSkillsElement) {
+                currentSkillsElement.innerHTML = currentSkillsHtml;
+            }
+            
+            // Update missing skills
+            const missingSkillsHtml = (skillGap?.missing_skills || []).map(skill => 
+                `<span class="skill-tag bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">${skill}</span>`
+            ).join('');
+            
+            const missingSkillsElement = document.querySelector('#missingSkills');
+            if (missingSkillsElement) {
+                missingSkillsElement.innerHTML = missingSkillsHtml;
+            }
+            
+            // Update match score
+            const matchScore = skillGap?.readiness_score || 0;
+            const scoreElement = document.querySelector('#matchScore');
+            const progressBar = document.querySelector('#matchProgressBar');
+            
+            if (scoreElement) scoreElement.textContent = matchScore + '%';
+            if (progressBar) progressBar.style.width = matchScore + '%';
+        }
+
+        function updateJobSuggestionsCard() {
+            const { jobs } = analysisData;
+            const jobSuggestions = jobs?.job_suggestions || [];
+            
+            // Update job cards dynamically
+            const jobContainer = document.querySelector('.space-y-3');
+            if (jobContainer && jobSuggestions.length > 0) {
+                const jobCardsHtml = jobSuggestions.map(job => `
+                    <div class="border border-gray-200 rounded-lg p-4 hover:border-orange-300 transition-colors cursor-pointer">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <div class="flex items-center mb-2">
+                                    <h4 class="font-semibold text-gray-900">${job.title}</h4>
+                                    <span class="ml-2 text-xs bg-${job.match >= 80 ? 'green' : job.match >= 60 ? 'yellow' : 'blue'}-100 text-${job.match >= 80 ? 'green' : job.match >= 60 ? 'yellow' : 'blue'}-800 px-2 py-1 rounded">${job.match}% Match</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-2">${job.level} level position</p>
+                                <div class="flex flex-wrap gap-1">
+                                    <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">${job.salary_range}</span>
+                                </div>
+                            </div>
+                            <div class="ml-4 text-${job.match >= 80 ? 'green' : job.match >= 60 ? 'yellow' : 'blue'}-500">
+                                <i class="fas fa-arrow-${job.match >= 80 ? 'up' : job.match >= 60 ? 'minus' : 'down'}"></i>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                
+                jobContainer.innerHTML = jobCardsHtml;
+            }
+        }
+
+        function updateRoadmapCard() {
+            const { roadmap } = analysisData;
+            const learningPlan = roadmap?.learning_plan || [];
+            
+            // Update roadmap timeline
+            const timelineContainer = document.querySelector('.space-y-3');
+            if (timelineContainer && learningPlan.length > 0) {
+                const timelineHtml = learningPlan.map((item, index) => {
+                    const colors = ['purple', 'blue', 'green', 'yellow'];
+                    const color = colors[index % colors.length];
+                    return `
+                        <div class="border-l-4 border-${color}-500 pl-4">
+                            <div class="flex items-center justify-between">
+                                <p class="font-medium text-gray-900">Week ${index * 2 + 1}-${index * 2 + 2}: ${item.skill}</p>
+                                <span class="text-xs bg-${color}-100 text-${color}-800 px-2 py-1 rounded">${item.priority}</span>
+                            </div>
+                            <p class="text-sm text-gray-600">${item.duration} learning plan</p>
+                        </div>
+                    `;
+                }).join('');
+                
+                timelineContainer.innerHTML = timelineHtml;
+            }
+        }
+
+        function updateResumeIssuesCard() {
+            // Update ATS score based on analysis
+            const atsScore = analysisData.skillGap?.readiness_score || 78;
+            const atsScoreElement = document.querySelector('.text-2xl.font-bold.text-yellow-800');
+            if (atsScoreElement) {
+                atsScoreElement.textContent = atsScore + '%';
+            }
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            const bgColor = type === 'error' ? 'bg-red-500' : 'bg-green-500';
+            notification.className = `fixed top-4 right-4 ${bgColor} text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-all duration-300`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Monitor text area changes
+        document.addEventListener('DOMContentLoaded', function() {
+            // Restore dashboard state first
+            restoreDashboardState();
+            
+            const textArea = document.getElementById('resumeText');
+            if (textArea) {
+                textArea.addEventListener('input', checkAnalyzeButton);
+            }
+            
+            // Check if we're returning from analysis
+            if (sessionStorage.getItem('analysisOption')) {
+                performAnalysis();
+                sessionStorage.removeItem('analysisOption');
+            }
+        });    
+    </script>
+</body>
+</html>

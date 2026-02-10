@@ -27,9 +27,6 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
-                    <button onclick="goBack()" class="mr-4 text-gray-500 hover:text-gray-700 transition-colors hidden">
-                        <i class="fas fa-arrow-left text-xl"></i>
-                    </button>
                     <div class="flex-shrink-0">
                         <h1 class="text-2xl font-bold text-transparent bg-clip-text gradient-bg">SkillSync</h1>
                     </div>
@@ -189,15 +186,6 @@
 
         function scrollToFeatures() {
             document.getElementById('features').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function goBack() {
-            if (window.history.length > 1) {
-                window.history.back();
-            } else {
-                // If no history, stay on home page (no action needed)
-                console.log('Already on home page');
-            }
         }
     </script>
 </body>

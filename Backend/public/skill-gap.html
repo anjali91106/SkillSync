@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Gap Analysis - SkillSync</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation Header -->
+    <nav class="bg-white shadow-sm border-b border-gray-200 fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <button onclick="goBack()" class="mr-4 text-gray-500 hover:text-gray-700 transition-colors">
+                        <i class="fas fa-arrow-left text-xl"></i>
+                    </button>
+                    <div class="flex-shrink-0">
+                        <h1 class="text-2xl font-bold text-transparent bg-clip-text gradient-bg">SkillSync</h1>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="index.html" class="text-gray-500 hover:text-purple-600 px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                        <a href="dashboard.html" class="text-gray-900 hover:text-purple-600 px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
+                        <a href="skill-gap.html" class="text-green-600 hover:text-purple-600 px-3 py-2 rounded-md text-sm font-medium">Skill Gap</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button onclick="toggleMobileMenu()" class="text-gray-500 hover:text-gray-900 focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12">
+        <!-- Header Section -->
+        <div class="mb-8">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Skill Gap Analysis</h1>
+                    <p class="text-lg text-gray-600">Detailed analysis of your skills and areas for improvement</p>
+                </div>
+                <button onclick="downloadSkillGapReport()" class="bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition duration-200 flex items-center">
+                    <i class="fas fa-download mr-2"></i>
+                    Download Report
+                </button>
+            </div>
+        </div>
+
+        <!-- Overview Card -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8 card-hover">
+            <div class="flex items-center mb-6">
+                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
+                    <i class="fas fa-chart-line text-green-600 text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-900">Analysis Overview</h2>
+                    <p class="text-gray-600 text-sm">Your skill readiness score and key metrics</p>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-green-600 mb-2">72%</div>
+                    <p class="text-gray-600 font-medium">Overall Match Score</p>
+                    <p class="text-sm text-gray-500">Based on target role requirements</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-blue-600 mb-2">6</div>
+                    <p class="text-gray-600 font-medium">Current Skills</p>
+                    <p class="text-sm text-gray-500">Skills you already possess</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-yellow-600 mb-2">5</div>
+                    <p class="text-gray-600 font-medium">Skills to Develop</p>
+                    <p class="text-sm text-gray-500">Missing skills for target role</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Current Skills Section -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8 card-hover">
+            <div class="flex items-center mb-6">
+                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                    <i class="fas fa-check-circle text-blue-600 text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-900">Your Current Skills</h2>
+                    <p class="text-gray-600 text-sm">Skills you have demonstrated in your resume</p>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="flex items-center bg-green-50 p-4 rounded-lg">
+                    <i class="fab fa-js text-yellow-500 text-2xl mr-3"></i>
+                    <div>
+                        <p class="font-medium text-gray-900">JavaScript</p>
+                        <p class="text-sm text-gray-600">Advanced proficiency</p>
+                    </div>
+                </div>
+                <div class="flex items-center bg-green-50 p-4 rounded-lg">
+                    <i class="fab fa-react text-blue-500 text-2xl mr-3"></i>
+                    <div>
+                        <p class="font-medium text-gray-900">React</p>
+                        <p class="text-sm text-gray-600">Advanced proficiency</p>
+                    </div>
+                </div>
+                <div class="flex items-center bg-green-50 p-4 rounded-lg">
+                    <i class="fab fa-node text-green-600 text-2xl mr-3"></i>
+                    <div>
+                        <p class="font-medium text-gray-900">Node.js</p>
+                        <p class="text-sm text-gray-600">Intermediate proficiency</p>
+                    </div>
+                </div>
+                <div class="flex items-center bg-green-50 p-4 rounded-lg">
+                    <i class="fas fa-database text-purple-500 text-2xl mr-3"></i>
+                    <div>
+                        <p class="font-medium text-gray-900">MongoDB</p>
+                        <p class="text-sm text-gray-600">Intermediate proficiency</p>
+                    </div>
+                </div>
+                <div class="flex items-center bg-green-50 p-4 rounded-lg">
+                    <i class="fab fa-git-alt text-orange-500 text-2xl mr-3"></i>
+                    <div>
+                        <p class="font-medium text-gray-900">Git</p>
+                        <p class="text-sm text-gray-600">Advanced proficiency</p>
+                    </div>
+                </div>
+                <div class="flex items-center bg-green-50 p-4 rounded-lg">
+                    <i class="fab fa-css3 text-blue-500 text-2xl mr-3"></i>
+                    <div>
+                        <p class="font-medium text-gray-900">CSS</p>
+                        <p class="text-sm text-gray-600">Advanced proficiency</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Missing Skills Section -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8 card-hover">
+            <div class="flex items-center mb-6">
+                <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mr-4">
+                    <i class="fas fa-exclamation-triangle text-yellow-600 text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-900">Skills to Develop</h2>
+                    <p class="text-gray-600 text-sm">Missing skills that will improve your job prospects</p>
+                </div>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="border-l-4 border-red-500 bg-red-50 p-4 rounded-lg">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="font-semibold text-gray-900">TypeScript</h3>
+                            <p class="text-sm text-gray-600">Essential for modern React development</p>
+                            <div class="flex items-center mt-2">
+                                <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">High Priority</span>
+                                <span class="text-xs text-gray-500 ml-2">2-3 weeks to learn</span>
+                            </div>
+                        </div>
+                        <div class="text-red-500">
+                            <i class="fas fa-arrow-up text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="border-l-4 border-orange-500 bg-orange-50 p-4 rounded-lg">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="font-semibold text-gray-900">Docker</h3>
+                            <p class="text-sm text-gray-600">Containerization for deployment and scaling</p>
+                            <div class="flex items-center mt-2">
+                                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded">High Priority</span>
+                                <span class="text-xs text-gray-500 ml-2">3-4 weeks to learn</span>
+                            </div>
+                        </div>
+                        <div class="text-orange-500">
+                            <i class="fas fa-arrow-up text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="border-l-4 border-yellow-500 bg-yellow-50 p-4 rounded-lg">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="font-semibold text-gray-900">AWS</h3>
+                            <p class="text-sm text-gray-600">Cloud services for modern applications</p>
+                            <div class="flex items-center mt-2">
+                                <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">Medium Priority</span>
+                                <span class="text-xs text-gray-500 ml-2">4-6 weeks to learn</span>
+                            </div>
+                        </div>
+                        <div class="text-yellow-500">
+                            <i class="fas fa-minus text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded-lg">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="font-semibold text-gray-900">GraphQL</h3>
+                            <p class="text-sm text-gray-600">Modern API query language and runtime</p>
+                            <div class="flex items-center mt-2">
+                                <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">Low Priority</span>
+                                <span class="text-xs text-gray-500 ml-2">2-3 weeks to learn</span>
+                            </div>
+                        </div>
+                        <div class="text-blue-500">
+                            <i class="fas fa-arrow-down text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="border-l-4 border-purple-500 bg-purple-50 p-4 rounded-lg">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="font-semibold text-gray-900">Kubernetes</h3>
+                            <p class="text-sm text-gray-600">Container orchestration for large-scale applications</p>
+                            <div class="flex items-center mt-2">
+                                <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">Low Priority</span>
+                                <span class="text-xs text-gray-500 ml-2">6-8 weeks to learn</span>
+                            </div>
+                        </div>
+                        <div class="text-purple-500">
+                            <i class="fas fa-arrow-down text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recommendations Section -->
+        <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+            <div class="flex items-center mb-6">
+                <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
+                    <i class="fas fa-lightbulb text-purple-600 text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-900">Recommendations</h2>
+                    <p class="text-gray-600 text-sm">Personalized suggestions to bridge your skill gaps</p>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="font-semibold text-gray-900 mb-3">Immediate Actions</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span class="text-gray-700">Start with TypeScript fundamentals - highest impact</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span class="text-gray-700">Practice Docker with personal projects</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span class="text-gray-700">Get AWS Certified Cloud Practitioner</span>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-gray-900 mb-3">Long-term Goals</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-arrow-right text-blue-500 mt-1 mr-2"></i>
+                            <span class="text-gray-700">Master GraphQL for API development</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-arrow-right text-blue-500 mt-1 mr-2"></i>
+                            <span class="text-gray-700">Learn Kubernetes for DevOps skills</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-arrow-right text-blue-500 mt-1 mr-2"></i>
+                            <span class="text-gray-700">Build full-stack applications with all technologies</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function downloadSkillGapReport() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Add title
+            doc.setFontSize(20);
+            doc.text('SKILL GAP ANALYSIS REPORT', 20, 20);
+            
+            // Add date
+            doc.setFontSize(12);
+            doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 20, 30);
+            
+            // Add content
+            doc.setFontSize(14);
+            doc.text('OVERVIEW', 20, 45);
+            doc.setFontSize(11);
+            doc.text('Overall Match Score: 72%', 20, 55);
+            doc.text('Current Skills: 6', 20, 62);
+            doc.text('Skills to Develop: 5', 20, 69);
+            doc.text('Target Role: Full Stack Developer', 20, 76);
+            
+            doc.setFontSize(14);
+            doc.text('YOUR CURRENT SKILLS', 20, 90);
+            doc.setFontSize(11);
+            doc.text('• JavaScript - Advanced proficiency', 20, 100);
+            doc.text('• React - Advanced proficiency', 20, 107);
+            doc.text('• Node.js - Intermediate proficiency', 20, 114);
+            doc.text('• MongoDB - Intermediate proficiency', 20, 121);
+            doc.text('• Git - Advanced proficiency', 20, 128);
+            doc.text('• CSS - Advanced proficiency', 20, 135);
+            
+            doc.setFontSize(14);
+            doc.text('SKILLS TO DEVELOP', 20, 150);
+            doc.setFontSize(11);
+            doc.text('HIGH PRIORITY:', 20, 160);
+            doc.text('1. TypeScript - Essential for modern React development', 25, 170);
+            doc.text('   Learning time: 2-3 weeks, Impact: High', 25, 177);
+            doc.text('2. Docker - Containerization for deployment and scaling', 25, 187);
+            doc.text('   Learning time: 3-4 weeks, Impact: High', 25, 194);
+            
+            doc.text('MEDIUM PRIORITY:', 20, 207);
+            doc.text('3. AWS - Cloud services for modern applications', 25, 217);
+            doc.text('   Learning time: 4-6 weeks, Impact: Medium', 25, 224);
+            
+            doc.text('LOW PRIORITY:', 20, 237);
+            doc.text('4. GraphQL - Modern API query language and runtime', 25, 247);
+            doc.text('   Learning time: 2-3 weeks, Impact: Low', 25, 254);
+            doc.text('5. Kubernetes - Container orchestration for large-scale applications', 25, 264);
+            doc.text('   Learning time: 6-8 weeks, Impact: Low', 25, 271);
+            
+            doc.setFontSize(14);
+            doc.text('RECOMMENDATIONS', 20, 290);
+            doc.setFontSize(11);
+            doc.text('IMMEDIATE ACTIONS:', 20, 300);
+            doc.text('• Start with TypeScript fundamentals - highest impact', 25, 310);
+            doc.text('• Practice Docker with personal projects', 25, 317);
+            doc.text('• Get AWS Certified Cloud Practitioner', 25, 324);
+            
+            doc.text('LONG-TERM GOALS:', 20, 337);
+            doc.text('• Master GraphQL for API development', 25, 347);
+            doc.text('• Learn Kubernetes for DevOps skills', 25, 354);
+            doc.text('• Build full-stack applications with all technologies', 25, 361);
+            
+            doc.setFontSize(14);
+            doc.text('NEXT STEPS', 20, 380);
+            doc.setFontSize(11);
+            doc.text('1. Focus on TypeScript first (2-3 weeks)', 20, 390);
+            doc.text('2. Learn Docker basics (3-4 weeks)', 20, 397);
+            doc.text('3. Get AWS certification (4-6 weeks)', 20, 404);
+            doc.text('4. Practice with real projects', 20, 411);
+            doc.text('5. Re-evaluate skills in 3 months', 20, 418);
+            
+            // Add footer
+            doc.setFontSize(10);
+            doc.text('Report generated by SkillSync AI Resume Analyzer', 20, 435);
+            doc.text('For more details, visit your dashboard at any time.', 20, 442);
+            
+            // Save the PDF
+            doc.save('skill-gap-analysis-report.pdf');
+        }
+
+        function generateSkillGapReport() {
+            const currentDate = new Date().toLocaleDateString();
+            
+            return `SKILL GAP ANALYSIS REPORT
+Generated on: ${currentDate}
+
+========================================
+OVERVIEW
+========================================
+Overall Match Score: 72%
+Current Skills: 6
+Skills to Develop: 5
+Target Role: Full Stack Developer
+
+========================================
+YOUR CURRENT SKILLS
+========================================
+• JavaScript - Advanced proficiency
+• React - Advanced proficiency  
+• Node.js - Intermediate proficiency
+• MongoDB - Intermediate proficiency
+• Git - Advanced proficiency
+• CSS - Advanced proficiency
+
+========================================
+SKILLS TO DEVELOP
+========================================
+
+HIGH PRIORITY:
+1. TypeScript
+   - Essential for modern React development
+   - Learning time: 2-3 weeks
+   - Impact: High
+
+2. Docker
+   - Containerization for deployment and scaling
+   - Learning time: 3-4 weeks
+   - Impact: High
+
+MEDIUM PRIORITY:
+3. AWS
+   - Cloud services for modern applications
+   - Learning time: 4-6 weeks
+   - Impact: Medium
+
+LOW PRIORITY:
+4. GraphQL
+   - Modern API query language and runtime
+   - Learning time: 2-3 weeks
+   - Impact: Low
+
+5. Kubernetes
+   - Container orchestration for large-scale applications
+   - Learning time: 6-8 weeks
+   - Impact: Low
+
+========================================
+RECOMMENDATIONS
+========================================
+
+IMMEDIATE ACTIONS:
+• Start with TypeScript fundamentals - highest impact
+• Practice Docker with personal projects
+• Get AWS Certified Cloud Practitioner
+
+LONG-TERM GOALS:
+• Master GraphQL for API development
+• Learn Kubernetes for DevOps skills
+• Build full-stack applications with all technologies
+
+========================================
+NEXT STEPS
+========================================
+1. Focus on TypeScript first (2-3 weeks)
+2. Learn Docker basics (3-4 weeks)
+3. Get AWS certification (4-6 weeks)
+4. Practice with real projects
+5. Re-evaluate skills in 3 months
+
+Report generated by SkillSync AI Resume Analyzer
+For more details, visit your dashboard at any time.
+`;
+        }
+
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                // If no history, go to home
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Suggestions - SkillSync</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation Header -->
+    <nav class="bg-white shadow-sm border-b border-gray-200 fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <button onclick="goBack()" class="mr-4 text-gray-500 hover:text-gray-700 transition-colors">
+                        <i class="fas fa-arrow-left text-xl"></i>
+                    </button>
+                    <div class="flex-shrink-0">
+                        <h1 class="text-2xl font-bold text-transparent bg-clip-text gradient-bg">SkillSync</h1>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="index.html" class="text-gray-500 hover:text-purple-600 px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                        <a href="dashboard.html" class="text-gray-900 hover:text-purple-600 px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
+                        <a href="job-suggestions.html" class="text-orange-600 hover:text-purple-600 px-3 py-2 rounded-md text-sm font-medium">Job Suggestions</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button onclick="toggleMobileMenu()" class="text-gray-500 hover:text-gray-900 focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12">
+        <!-- Header Section -->
+        <div class="mb-8">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Job Suggestions</h1>
+                    <p class="text-lg text-gray-600">Personalized career opportunities based on your skills</p>
+                </div>
+                <button onclick="downloadJobSuggestionsReport()" class="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition duration-200 flex items-center">
+                    <i class="fas fa-download mr-2"></i>
+                    Download Report
+                </button>
+            </div>
+        </div>
+
+        <!-- Overview Card -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8 card-hover">
+            <div class="flex items-center mb-6">
+                <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mr-4">
+                    <i class="fas fa-briefcase text-orange-600 text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-900">Career Opportunities Overview</h2>
+                    <p class="text-gray-600 text-sm">Summary of job matches and market insights</p>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-4 gap-6">
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-orange-600 mb-2">3</div>
+                    <p class="text-gray-600 font-medium">Job Matches</p>
+                    <p class="text-sm text-gray-500">Based on your skills</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-green-600 mb-2">92%</div>
+                    <p class="text-gray-600 font-medium">Best Match</p>
+                    <p class="text-sm text-gray-500">Frontend Developer</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-blue-600 mb-2">$75K</div>
+                    <p class="text-gray-600 font-medium">Avg. Salary</p>
+                    <p class="text-sm text-gray-500">Annual USD</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-purple-600 mb-2">85%</div>
+                    <p class="text-gray-600 font-medium">Market Demand</p>
+                    <p class="text-sm text-gray-500">High growth roles</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Job Cards -->
+        <div class="space-y-6 mb-8">
+            <!-- Frontend Developer -->
+            <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="flex-1">
+                        <div class="flex items-center mb-3">
+                            <h3 class="text-xl font-semibold text-gray-900">Frontend Developer</h3>
+                            <span class="ml-3 bg-green-100 text-green-800 text-xs px-2 py-1 rounded">92% Match</span>
+                            <span class="ml-2 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">High Demand</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Build responsive web applications using modern JavaScript frameworks and create exceptional user experiences.</p>
+                        
+                        <div class="grid md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <h4 class="font-medium text-gray-900 mb-2">Required Skills</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">React</span>
+                                    <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">TypeScript</span>
+                                    <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">CSS</span>
+                                    <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">JavaScript</span>
+                                    <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">HTML5</span>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-900 mb-2">Your Skills Match</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">React ✓</span>
+                                    <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded">TypeScript</span>
+                                    <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">CSS ✓</span>
+                                    <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">JavaScript ✓</span>
+                                    <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">HTML5 ✓</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-3 gap-4 text-sm">
+                            <div class="flex items-center">
+                                <i class="fas fa-dollar-sign text-green-500 mr-2"></i>
+                                <span class="text-gray-700">Salary: $75K - $120K</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-briefcase text-blue-500 mr-2"></i>
+                                <span class="text-gray-700">Level: Mid</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-map-marker-alt text-red-500 mr-2"></i>
+                                <span class="text-gray-700">Remote Available</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ml-4 text-green-500">
+                        <i class="fas fa-arrow-up text-2xl"></i>
+                    </div>
+                </div>
+                
+                <div class="border-t pt-4">
+                    <h4 class="font-medium text-gray-900 mb-2">Why This Role Fits You</h4>
+                    <ul class="space-y-1 text-sm text-gray-600">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                            <span>Strong match with your React and JavaScript skills</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                            <span>Only need to add TypeScript to reach 100% match</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                            <span>High demand in tech industry with growth potential</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Java Developer -->
+            <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="flex-1">
+                        <div class="flex items-center mb-3">
+                            <h3 class="text-xl font-semibold text-gray-900">Java Developer</h3>
+                            <span class="ml-3 bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded">78% Match</span>
+                            <span class="ml-2 bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded">Enterprise</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Develop enterprise applications and backend services using Java ecosystem and modern frameworks.</p>
+                        
+                        <div class="grid md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <h4 class="font-medium text-gray-900 mb-2">Required Skills</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">Java</span>
+                                    <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">Spring</span>
+                                    <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">Microservices</span>
+                                    <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">SQL</span>
+                                    <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">REST APIs</span>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-900 mb-2">Your Skills Match</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="text-xs bg-red-100 text-red-700 px-2 py-1 rounded">Java</span>
+                                    <span class="text-xs bg-red-100 text-red-700 px-2 py-1 rounded">Spring</span>
+                                    <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded">Microservices</span>
+                                    <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">Node.js ✓</span>
+                                    <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">APIs ✓</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-3 gap-4 text-sm">
+                            <div class="flex items-center">
+                                <i class="fas fa-dollar-sign text-green-500 mr-2"></i>
+                                <span class="text-gray-700">Salary: $80K - $130K</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-briefcase text-blue-500 mr-2"></i>
+                                <span class="text-gray-700">Level: Mid</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-building text-purple-500 mr-2"></i>
+                                <span class="text-gray-700">Enterprise Focus</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ml-4 text-yellow-500">
+                        <i class="fas fa-minus text-2xl"></i>
+                    </div>
+                </div>
+                
+                <div class="border-t pt-4">
+                    <h4 class="font-medium text-gray-900 mb-2">Skills to Develop</h4>
+                    <ul class="space-y-1 text-sm text-gray-600">
+                        <li class="flex items-start">
+                            <i class="fas fa-arrow-right text-blue-500 mt-1 mr-2"></i>
+                            <span>Learn Java fundamentals and Spring framework</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-arrow-right text-blue-500 mt-1 mr-2"></i>
+                            <span>Study microservices architecture</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-arrow-right text-blue-500 mt-1 mr-2"></i>
+                            <span>Practice SQL and database design</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Flutter Developer -->
+            <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="flex-1">
+                        <div class="flex items-center mb-3">
+                            <h3 class="text-xl font-semibold text-gray-900">Flutter Developer</h3>
+                            <span class="ml-3 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">65% Match</span>
+                            <span class="ml-2 bg-green-100 text-green-800 text-xs px-2 py-1 rounded">Mobile</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Create cross-platform mobile applications with Flutter framework and deliver native-like performance.</p>
+                        
+                        <div class="grid md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <h4 class="font-medium text-gray-900 mb-2">Required Skills</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">Dart</span>
+                                    <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">Flutter</span>
+                                    <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">Mobile Dev</span>
+                                    <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">UI/UX</span>
+                                    <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">State Management</span>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-900 mb-2">Your Skills Match</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="text-xs bg-red-100 text-red-700 px-2 py-1 rounded">Dart</span>
+                                    <span class="text-xs bg-red-100 text-red-700 px-2 py-1 rounded">Flutter</span>
+                                    <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded">Mobile Dev</span>
+                                    <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">UI/UX ✓</span>
+                                    <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded">State Management</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-3 gap-4 text-sm">
+                            <div class="flex items-center">
+                                <i class="fas fa-dollar-sign text-green-500 mr-2"></i>
+                                <span class="text-gray-700">Salary: $70K - $110K</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-briefcase text-blue-500 mr-2"></i>
+                                <span class="text-gray-700">Level: Junior</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-mobile-alt text-green-500 mr-2"></i>
+                                <span class="text-gray-700">Cross-Platform</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ml-4 text-blue-500">
+                        <i class="fas fa-arrow-down text-2xl"></i>
+                    </div>
+                </div>
+                
+                <div class="border-t pt-4">
+                    <h4 class="font-medium text-gray-900 mb-2">Learning Path</h4>
+                    <ul class="space-y-1 text-sm text-gray-600">
+                        <li class="flex items-start">
+                            <i class="fas fa-arrow-right text-blue-500 mt-1 mr-2"></i>
+                            <span>Start with Dart programming language basics</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-arrow-right text-blue-500 mt-1 mr-2"></i>
+                            <span>Learn Flutter framework and widgets</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-arrow-right text-blue-500 mt-1 mr-2"></i>
+                            <span>Build mobile apps with state management</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Market Insights -->
+        <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+            <div class="flex items-center mb-6">
+                <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
+                    <i class="fas fa-chart-line text-purple-600 text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-900">Market Insights</h2>
+                    <p class="text-gray-600 text-sm">Industry trends and salary expectations</p>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="font-semibold text-gray-900 mb-3">Salary Trends</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-700">Frontend Developer</span>
+                            <span class="text-green-600 font-medium">$75K - $120K</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-700">Java Developer</span>
+                            <span class="text-green-600 font-medium">$80K - $130K</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-700">Flutter Developer</span>
+                            <span class="text-green-600 font-medium">$70K - $110K</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-gray-900 mb-3">Industry Demand</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
+                            <span class="text-gray-700">Frontend: High demand, rapid growth</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full mr-3"></div>
+                            <span class="text-gray-700">Java: Stable demand, enterprise focus</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
+                            <span class="text-gray-700">Flutter: Growing demand, emerging tech</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function downloadJobSuggestionsReport() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Add title
+            doc.setFontSize(20);
+            doc.text('JOB SUGGESTIONS REPORT', 20, 20);
+            
+            // Add date
+            doc.setFontSize(12);
+            doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 20, 30);
+            
+            // Add content
+            doc.setFontSize(14);
+            doc.text('OVERVIEW', 20, 45);
+            doc.setFontSize(11);
+            doc.text('Total Job Matches: 3', 20, 55);
+            doc.text('Best Match: 92% (Frontend Developer)', 20, 62);
+            doc.text('Average Salary: $75K', 20, 69);
+            doc.text('Market Demand: 85% (High growth roles)', 20, 76);
+            
+            doc.setFontSize(14);
+            doc.text('JOB MATCHES', 20, 90);
+            doc.setFontSize(11);
+            
+            doc.text('1. FRONTEND DEVELOPER', 20, 105);
+            doc.text('Match Score: 92%, Level: Mid', 20, 112);
+            doc.text('Salary Range: $75K - $120K, Demand: High', 20, 119);
+            doc.text('Remote Work: Available', 20, 126);
+            doc.text('Description: Build responsive web applications using modern JavaScript', 20, 136);
+            doc.text('frameworks and create exceptional user experiences.', 20, 143);
+            doc.text('Required Skills: React, TypeScript, CSS, JavaScript, HTML5', 20, 153);
+            doc.text('Your Skills Match: React ✓, TypeScript (Missing), CSS ✓,', 20, 163);
+            doc.text('JavaScript ✓, HTML5 ✓', 20, 170);
+            doc.text('Why This Role Fits You:', 20, 180);
+            doc.text('• Strong match with your React and JavaScript skills', 25, 190);
+            doc.text('• Only need to add TypeScript to reach 100% match', 25, 197);
+            doc.text('• High demand in tech industry with growth potential', 25, 204);
+            
+            doc.text('2. JAVA DEVELOPER', 20, 220);
+            doc.text('Match Score: 78%, Level: Mid', 20, 227);
+            doc.text('Salary Range: $80K - $130K, Focus: Enterprise', 20, 234);
+            doc.text('Description: Develop enterprise applications and backend services using', 20, 244);
+            doc.text('Java ecosystem and modern frameworks.', 20, 251);
+            doc.text('Required Skills: Java, Spring, Microservices, SQL, REST APIs', 20, 261);
+            doc.text('Your Skills Match: Java (Missing), Spring (Missing),', 20, 271);
+            doc.text('Microservices (Missing), Node.js ✓ (Transferable), APIs ✓', 20, 278);
+            doc.text('Skills to Develop:', 20, 288);
+            doc.text('• Learn Java fundamentals and Spring framework', 25, 298);
+            doc.text('• Study microservices architecture', 25, 305);
+            doc.text('• Practice SQL and database design', 25, 312);
+            
+            // Add new page for more content
+            doc.addPage();
+            
+            doc.text('3. FLUTTER DEVELOPER', 20, 20);
+            doc.text('Match Score: 65%, Level: Junior', 20, 27);
+            doc.text('Salary Range: $70K - $110K, Platform: Cross-Platform Mobile', 20, 34);
+            doc.text('Description: Create cross-platform mobile applications with Flutter', 20, 44);
+            doc.text('framework and deliver native-like performance.', 20, 51);
+            doc.text('Required Skills: Dart, Flutter, Mobile Dev, UI/UX, State Management', 20, 61);
+            doc.text('Your Skills Match: Dart (Missing), Flutter (Missing),', 20, 71);
+            doc.text('Mobile Dev (Missing), UI/UX ✓, State Management (Missing)', 20, 78);
+            doc.text('Learning Path:', 20, 88);
+            doc.text('• Start with Dart programming language basics', 25, 98);
+            doc.text('• Learn Flutter framework and widgets', 25, 105);
+            doc.text('• Build mobile apps with state management', 25, 112);
+            
+            doc.setFontSize(14);
+            doc.text('MARKET INSIGHTS', 20, 135);
+            doc.setFontSize(11);
+            doc.text('SALARY TRENDS:', 20, 145);
+            doc.text('• Frontend Developer: $75K - $120K (Growing)', 25, 155);
+            doc.text('• Java Developer: $80K - $130K (Stable)', 25, 162);
+            doc.text('• Flutter Developer: $70K - $110K (Growing)', 25, 169);
+            
+            doc.text('INDUSTRY DEMAND:', 20, 182);
+            doc.text('• Frontend: High demand, rapid growth', 25, 192);
+            doc.text('• Java: Stable demand, enterprise focus', 25, 199);
+            doc.text('• Flutter: Growing demand, emerging tech', 25, 206);
+            
+            doc.setFontSize(14);
+            doc.text('RECOMMENDATIONS', 20, 225);
+            doc.setFontSize(11);
+            doc.text('IMMEDIATE ACTIONS:', 20, 235);
+            doc.text('1. Focus on Frontend Developer role (92% match)', 25, 245);
+            doc.text('2. Learn TypeScript to reach 100% match', 25, 252);
+            doc.text('3. Build portfolio projects with React + TypeScript', 25, 259);
+            doc.text('4. Apply for frontend positions while learning', 25, 266);
+            
+            doc.text('MEDIUM-TERM GOALS:', 20, 279);
+            doc.text('1. Explore Java development if interested in enterprise', 25, 289);
+            doc.text('2. Consider Flutter for mobile development opportunities', 25, 296);
+            doc.text('3. Continue building full-stack applications', 25, 303);
+            doc.text('4. Network with professionals in target roles', 25, 310);
+            
+            doc.setFontSize(14);
+            doc.text('NEXT STEPS', 20, 330);
+            doc.setFontSize(11);
+            doc.text('1. Update resume with frontend focus', 20, 340);
+            doc.text('2. Create GitHub portfolio with React projects', 20, 347);
+            doc.text('3. Learn TypeScript (2-3 weeks)', 20, 354);
+            doc.text('4. Start applying for frontend developer roles', 20, 361);
+            doc.text('5. Consider certifications for additional credibility', 20, 368);
+            
+            // Add footer
+            doc.setFontSize(10);
+            doc.text('Report generated by SkillSync AI Career Advisor', 20, 385);
+            doc.text('For updated suggestions, visit your dashboard regularly.', 20, 392);
+            
+            // Save the PDF
+            doc.save('job-suggestions-report.pdf');
+        }
+
+        function generateJobSuggestionsReport() {
+            const currentDate = new Date().toLocaleDateString();
+            
+            return `JOB SUGGESTIONS REPORT
+Generated on: ${currentDate}
+
+========================================
+OVERVIEW
+========================================
+Total Job Matches: 3
+Best Match: 92% (Frontend Developer)
+Average Salary: $75K
+Market Demand: 85% (High growth roles)
+
+========================================
+JOB MATCHES
+========================================
+
+1. FRONTEND DEVELOPER
+Match Score: 92%
+Level: Mid
+Salary Range: $75K - $120K
+Demand: High
+Remote Work: Available
+
+Description:
+Build responsive web applications using modern JavaScript frameworks and create exceptional user experiences.
+
+Required Skills:
+• React
+• TypeScript
+• CSS
+• JavaScript
+• HTML5
+
+Your Skills Match:
+• React ✓
+• TypeScript (Missing)
+• CSS ✓
+• JavaScript ✓
+• HTML5 ✓
+
+Why This Role Fits You:
+• Strong match with your React and JavaScript skills
+• Only need to add TypeScript to reach 100% match
+• High demand in tech industry with growth potential
+
+2. JAVA DEVELOPER
+Match Score: 78%
+Level: Mid
+Salary Range: $80K - $130K
+Focus: Enterprise
+
+Description:
+Develop enterprise applications and backend services using Java ecosystem and modern frameworks.
+
+Required Skills:
+• Java
+• Spring
+• Microservices
+• SQL
+• REST APIs
+
+Your Skills Match:
+• Java (Missing)
+• Spring (Missing)
+• Microservices (Missing)
+• Node.js ✓ (Transferable)
+• APIs ✓ (Transferable)
+
+Skills to Develop:
+• Learn Java fundamentals and Spring framework
+• Study microservices architecture
+• Practice SQL and database design
+
+3. FLUTTER DEVELOPER
+Match Score: 65%
+Level: Junior
+Salary Range: $70K - $110K
+Platform: Cross-Platform Mobile
+
+Description:
+Create cross-platform mobile applications with Flutter framework and deliver native-like performance.
+
+Required Skills:
+• Dart
+• Flutter
+• Mobile Development
+• UI/UX
+• State Management
+
+Your Skills Match:
+• Dart (Missing)
+• Flutter (Missing)
+• Mobile Development (Missing)
+• UI/UX ✓
+• State Management (Missing)
+
+Learning Path:
+• Start with Dart programming language basics
+• Learn Flutter framework and widgets
+• Build mobile apps with state management
+
+========================================
+MARKET INSIGHTS
+========================================
+
+SALARY TRENDS:
+• Frontend Developer: $75K - $120K (Growing)
+• Java Developer: $80K - $130K (Stable)
+• Flutter Developer: $70K - $110K (Growing)
+
+INDUSTRY DEMAND:
+• Frontend: High demand, rapid growth
+• Java: Stable demand, enterprise focus
+• Flutter: Growing demand, emerging tech
+
+========================================
+RECOMMENDATIONS
+========================================
+
+IMMEDIATE ACTIONS:
+1. Focus on Frontend Developer role (92% match)
+2. Learn TypeScript to reach 100% match
+3. Build portfolio projects with React + TypeScript
+4. Apply for frontend positions while learning
+
+MEDIUM-TERM GOALS:
+1. Explore Java development if interested in enterprise
+2. Consider Flutter for mobile development opportunities
+3. Continue building full-stack applications
+4. Network with professionals in target roles
+
+========================================
+NEXT STEPS
+========================================
+1. Update resume with frontend focus
+2. Create GitHub portfolio with React projects
+3. Learn TypeScript (2-3 weeks)
+4. Start applying for frontend developer roles
+5. Consider certifications for additional credibility
+
+========================================
+SUPPORT RESOURCES
+========================================
+Job Search Platforms:
+• LinkedIn Jobs
+• Indeed
+• Glassdoor
+• Stack Overflow Jobs
+
+Learning Platforms:
+• Udemy
+• Coursera
+• Pluralsight
+• freeCodeCamp
+
+Professional Networks:
+• GitHub
+• LinkedIn
+• Twitter (Tech community)
+• Meetup groups
+
+Report generated by SkillSync AI Career Advisor
+For updated suggestions, visit your dashboard regularly.
+`;
+        }
+
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                // If no history, go to home
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>
