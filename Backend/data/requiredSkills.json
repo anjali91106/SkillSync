@@ -1,0 +1,271 @@
+{
+  "software_engineer": {
+    "name": "Software Engineer",
+    "required_skills": [
+      "javascript",
+      "typescript",
+      "react",
+      "nodejs",
+      "html",
+      "css",
+      "git",
+      "mongodb",
+      "express",
+      "rest apis",
+      "problem solving"
+    ],
+    "preferred_skills": [
+      "docker",
+      "kubernetes",
+      "aws",
+      "testing",
+      "ci/cd",
+      "agile",
+      "webpack",
+      "graphql"
+    ]
+  },
+  "frontend_developer": {
+    "name": "Frontend Developer",
+    "required_skills": [
+      "html",
+      "css",
+      "javascript",
+      "react",
+      "typescript",
+      "responsive design",
+      "git",
+      "webpack",
+      "browser developer tools"
+    ],
+    "preferred_skills": [
+      "vue",
+      "angular",
+      "nextjs",
+      "tailwind",
+      "material ui",
+      "storybook",
+      "testing",
+      "performance optimization"
+    ]
+  },
+  "backend_developer": {
+    "name": "Backend Developer",
+    "required_skills": [
+      "nodejs",
+      "javascript",
+      "python",
+      "java",
+      "databases",
+      "apis",
+      "rest",
+      "sql",
+      "git",
+      "security"
+    ],
+    "preferred_skills": [
+      "docker",
+      "kubernetes",
+      "microservices",
+      "graphql",
+      "redis",
+      "aws",
+      "testing",
+      "ci/cd"
+    ]
+  },
+  "full_stack_developer": {
+    "name": "Full Stack Developer",
+    "required_skills": [
+      "javascript",
+      "react",
+      "nodejs",
+      "html",
+      "css",
+      "databases",
+      "apis",
+      "git",
+      "rest apis",
+      "problem solving"
+    ],
+    "preferred_skills": [
+      "typescript",
+      "docker",
+      "aws",
+      "testing",
+      "mongodb",
+      "postgresql",
+      "webpack",
+      "agile"
+    ]
+  },
+  "data_scientist": {
+    "name": "Data Scientist",
+    "required_skills": [
+      "python",
+      "r",
+      "statistics",
+      "machine learning",
+      "data analysis",
+      "sql",
+      "pandas",
+      "numpy",
+      "visualization"
+    ],
+    "preferred_skills": [
+      "tensorflow",
+      "pytorch",
+      "jupyter",
+      "aws",
+      "big data",
+      "deep learning",
+      "nlp",
+      "spark"
+    ]
+  },
+  "devops_engineer": {
+    "name": "DevOps Engineer",
+    "required_skills": [
+      "linux",
+      "docker",
+      "kubernetes",
+      "ci/cd",
+      "aws",
+      "monitoring",
+      "scripting",
+      "networking",
+      "security"
+    ],
+    "preferred_skills": [
+      "terraform",
+      "ansible",
+      "jenkins",
+      "gitlab",
+      "prometheus",
+      "grafana",
+      "microservices",
+      "cloud architecture"
+    ]
+  },
+  "mobile_developer": {
+    "name": "Mobile Developer",
+    "required_skills": [
+      "javascript",
+      "react native",
+      "mobile development",
+      "ios",
+      "android",
+      "git",
+      "apis",
+      "responsive design",
+      "testing"
+    ],
+    "preferred_skills": [
+      "flutter",
+      "swift",
+      "kotlin",
+      "firebase",
+      "push notifications",
+      "app store deployment",
+      "performance optimization",
+      "security"
+    ]
+  },
+  "product_manager": {
+    "name": "Product Manager",
+    "required_skills": [
+      "product management",
+      "communication",
+      "leadership",
+      "market research",
+      "agile",
+      "scrum",
+      "data analysis",
+      "project management",
+      "stakeholder management"
+    ],
+    "preferred_skills": [
+      "technical writing",
+      "ui/ux understanding",
+      "analytics",
+      "roadmap planning",
+      "a/b testing",
+      "user research",
+      "business strategy",
+      "presentation skills"
+    ]
+  },
+  "ui_ux_designer": {
+    "name": "UI/UX Designer",
+    "required_skills": [
+      "figma",
+      "sketch",
+      "adobe xd",
+      "user research",
+      "wireframing",
+      "prototyping",
+      "visual design",
+      "usability testing",
+      "responsive design"
+    ],
+    "preferred_skills": [
+      "illustrator",
+      "photoshop",
+      "after effects",
+      "html",
+      "css",
+      "javascript",
+      "design systems",
+      "accessibility"
+    ]
+  },
+  "qa_engineer": {
+    "name": "QA Engineer",
+    "required_skills": [
+      "testing",
+      "quality assurance",
+      "bug tracking",
+      "test plans",
+      "apis",
+      "databases",
+      "attention to detail",
+      "documentation",
+      "communication"
+    ],
+    "preferred_skills": [
+      "selenium",
+      "cypress",
+      "jest",
+      "ci/cd",
+      "agile",
+      "jira",
+      "postman",
+      "performance testing"
+    ]
+  },
+  "cyber_security": {
+    "name": "Cyber Security Analyst",
+    "required_skills": [
+      "network security",
+      "information security",
+      "risk assessment",
+      "vulnerability assessment",
+      "firewall configuration",
+      "intrusion detection",
+      "security protocols",
+      "penetration testing",
+      "compliance",
+      "incident response"
+    ],
+    "preferred_skills": [
+      "siem tools",
+      "encryption",
+      "identity management",
+      "security auditing",
+      "forensics",
+      "malware analysis",
+      "threat intelligence",
+      "security frameworks"
+    ]
+  }
+}

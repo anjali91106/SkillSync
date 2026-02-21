@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy"
+content="
+default-src 'self';
+script-src 'self' https://cdn.tailwindcss.com;
+style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+font-src 'self' https://fonts.gstatic.com;
+">
+    <title>Community - SkillSync</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Styles */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #667eea;
+        }
+
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #667eea;
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            max-width: 1400px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 70% 30%;
+            gap: 2rem;
+        }
+
+        /* Chat Section */
+        .chat-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+        }
+
+        .chat-header {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .messages-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+        }
+
+        .message {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .message-content {
+            flex: 1;
+        }
+
+        .message-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .message-username {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .message-time {
+            font-size: 0.75rem;
+            color: #666;
+        }
+
+        .message-text {
+            background: white;
+            padding: 0.75rem;
+            border-radius: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            line-height: 1.4;
+        }
+
+        .message.own .message-text {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .chat-input-container {
+            display: flex;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .file-upload-btn,
+        .send-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-btn {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .file-upload-btn:hover {
+            background: #e0e0e0;
+        }
+
+        .send-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .send-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Videos Section */
+        .videos-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            height: 600px;
+            overflow-y: auto;
+        }
+
+        .videos-header {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .video-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .video-thumbnail {
+            position: relative;
+            width: 100%;
+            height: 140px;
+            background: #f0f0f0;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .video-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .video-card:hover .video-thumbnail img {
+            transform: scale(1.05);
+        }
+
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: #667eea;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .play-button:hover {
+            background: white;
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .video-info {
+            padding: 1rem;
+        }
+
+        .mentor-name {
+            font-weight: bold;
+            color: #333;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .video-title {
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .video-description {
+            font-size: 0.8rem;
+            color: #666;
+            line-height: 1.4;
+            margin-bottom: 0.75rem;
+        }
+
+        .video-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 800px;
+            width: 90%;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .close-modal:hover {
+            color: #333;
+        }
+
+        .modal video {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.1);
+            padding: 2rem 0;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            text-align: center;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+
+        .social-links a:hover {
+            transform: translateY(-3px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            main {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .chat-section,
+            .videos-section {
+                height: 500px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">&larr; Back to Home</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="chat-section">
+            <div class="chat-header"> Community Discussion</div>
+            <div class="messages-container" id="messagesContainer">
+                <div class="message">
+                    <div class="message-avatar">JD</div>
+                    <div class="message-content">
+                        <div class="message-header">
+                            <span class="message-username">John Doe</span>
+                            <span class="message-time">10:30 AM</span>
+                        </div>
+                        <div class="message-text">Hey everyone! Working on the two-sum problem. Any tips?</div>
+                    </div>
+                </div>
+                <div class="message own">
+                    <div class="message-avatar">ME</div>
+                    <div class="message-content">
+                        <div class="message-header">
+                            <span class="message-username">Me</span>
+                            <span class="message-time">10:32 AM</span>
+                        </div>
+                        <div class="message-text">Try using a hash map for O(n) time complexity!</div>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input-container">
+                <input type="text" class="chat-input" id="messageInput" placeholder="Type your message...">
+                <input type="file" id="fileInput" style="display: none;" accept="image/*,.pdf">
+                <button class="file-upload-btn" onclick="document.getElementById('fileInput').click()">
+                    <i class="fas fa-paperclip"></i>
+                </button>
+                <button id="send-btn">
+                    <i class="fas fa-paper-plane"></i> Send
+                </button>
+            </div>
+        </section>
+
+        <section class="videos-section">
+            <div class="videos-header">Community Mentor Videos</div>
+            <div id="videosContainer">
+                <div class="video-card">
+                    <div class="video-thumbnail" onclick="openVideoModal('Mentor_Video_Generation.mp4', 'Sarah Johnson')">
+                        <img src="media/Gemini_Generated_Image_300i4t300i4t300i.png" alt="Video thumbnail">
+                        <div class="play-button">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <div class="mentor-name">Sarah Johnson</div>
+                        <div class="video-title">Crack LeetCode Interviews</div>
+                        <div class="video-description">Master essential problem-solving patterns and strategies to ace technical interviews at top tech companies.</div>
+                        <div class="video-tags">
+                            <span class="tag">#DSA</span>
+                            <span class="tag">#InterviewPrep</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="video-card">
+                    <div class="video-thumbnail" onclick="openVideoModal('gemini_generated_video_54920058.mp4', 'Mike Chen')">
+                        <img src="media/Gemini_Generated_Image_touoi2touoi2touo.png" alt="Video thumbnail">
+                        <div class="play-button">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <div class="mentor-name">Mike Chen</div>
+                        <div class="video-title">System Design Fundamentals</div>
+                        <div class="video-description">Learn how to design scalable systems and architecture patterns commonly asked in FAANG interviews.</div>
+                        <div class="video-tags">
+                            <span class="tag">#SystemDesign</span>
+                            <span class="tag">#Architecture</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="video-card">
+                    <div class="video-thumbnail" onclick="openVideoModal('Mentor_Video_Generation.mp4', 'Emily Rodriguez')">
+                        <img src="media/Gemini_Generated_Image_touoi2touoi2touo.png" alt="Video thumbnail">
+                        <div class="play-button">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <div class="mentor-name">Emily Rodriguez</div>
+                        <div class="video-title">Advanced Data Structures</div>
+                        <div class="video-description">Deep dive into complex data structures like tries, segment trees, and advanced graph algorithms.</div>
+                        <div class="video-tags">
+                            <span class="tag">#DSA</span>
+                            <span class="tag">#Advanced</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="video-card">
+                    <div class="video-thumbnail" onclick="openVideoModal('gemini_generated_video_54920058.mp4', 'David Kim')">
+                        <img src="media/Gemini_Generated_Image_300i4t300i4t300i.png" alt="Video thumbnail">
+                        <div class="play-button">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <div class="mentor-name">David Kim</div>
+                        <div class="video-title">Dynamic Programming Mastery</div>
+                        <div class="video-description">Conquer DP problems with proven techniques and pattern recognition strategies for optimal solutions.</div>
+                        <div class="video-tags">
+                            <span class="tag">#DP</span>
+                            <span class="tag">#InterviewPrep</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="modal" id="videoModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeVideoModal()">&times;</span>
+            <video id="modalVideo" controls>
+                <source src="" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="social-links">
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+            <p>&copy; 2024 SkillSync. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="community.js"></script>
+</body>
+</html>

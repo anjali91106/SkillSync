@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Industry Insights & Knowledge Hub</title>
+    <link rel="stylesheet" href="industry_insights.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header with Navigation -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h1>Industry Insights & Knowledge Hub</h1>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="index.html">&larr; Back to Home</a></li>
+                </ul>
+            </nav>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h2>Stay Updated with Industry Trends</h2>
+            <p>Discover the latest insights, trends, and knowledge sharing opportunities in the industry. Stay ahead with expert analysis and collaborative learning experiences.</p>
+            <button class="cta-button" onclick="scrollToSection('insights')">Explore Articles</button>
+        </div>
+    </section>
+
+    <!-- Search Bar -->
+    <section class="search-section">
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search articles by title...">
+                <button id="clearSearch" class="clear-btn" style="display: none;">
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filter Buttons -->
+    <section class="filter-section">
+        <div class="filter-container">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="Industry Insights">Industry Insights</button>
+            <button class="filter-btn" data-filter="Knowledge Sharing">Knowledge Sharing</button>
+        </div>
+    </section>
+
+    <!-- Blog/Articles Section -->
+    <section id="insights" class="articles-section">
+        <div class="container">
+            <h2 class="section-title">Latest Articles</h2>
+            <div id="articlesContainer" class="articles-grid">
+                <!-- Articles will be dynamically inserted here -->
+            </div>
+            <div id="noResults" class="no-results" style="display: none;">
+                <h3>No articles found</h3>
+                <p>Try adjusting your search or filter criteria</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Knowledge Sharing Section -->
+    <section id="knowledge-sharing" class="knowledge-section">
+        <div class="container">
+            <h2 class="section-title">Knowledge Sharing Opportunities</h2>
+            <div class="knowledge-grid">
+                <div class="knowledge-card">
+                    <div class="knowledge-icon">
+                    </div>
+                    <h3>Workshops</h3>
+                    <p>Hands-on workshops led by industry experts covering the latest technologies and best practices.</p>
+                    <ul>
+                        <li>Interactive sessions</li>
+                        <li>Real-world projects</li>
+                        <li>Peer collaboration</li>
+                    </ul>
+                </div>
+                <div class="knowledge-card">
+                    <div class="knowledge-icon">
+                    </div>
+                    <h3>Webinars</h3>
+                    <p>Live and recorded webinars featuring thought leaders discussing emerging trends and innovations.</p>
+                    <ul>
+                        <li>Live Q&A sessions</li>
+                        <li>Expert panels</li>
+                        <li>On-demand access</li>
+                    </ul>
+                </div>
+                <div class="knowledge-card">
+                    <div class="knowledge-icon">
+                    </div>
+                    <h3>Internal Training</h3>
+                    <p>Comprehensive training programs designed to enhance skills and foster continuous learning.</p>
+                    <ul>
+                        <li>Customized curriculum</li>
+                        <li>Mentorship programs</li>
+                        <li>Certification paths</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h3>Industry Insights & Knowledge Hub</h3>
+                    <p>Your trusted source for industry trends and collaborative learning.</p>
+                </div>
+                <div class="footer-social">
+                    <h4>Connect With Us</h4>
+                    <div class="social-links">
+                        <a href="#" aria-label="LinkedIn"></a>
+                        <a href="#" aria-label="Twitter"></a>
+                        <a href="#" aria-label="GitHub"></a>
+                        <a href="#" aria-label="YouTube"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Industry Hub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal for Article Details -->
+    <div id="articleModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-header">
+                <h2 id="modalTitle"></h2>
+                <div class="modal-meta">
+                    <span id="modalCategory" class="category-badge"></span>
+                    <span id="modalDate"></span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <p id="modalDescription"></p>
+                <div id="modalFullContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="industry_insights (1).js"></script>
+</body>
+</html>

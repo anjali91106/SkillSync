@@ -19,186 +19,408 @@
             transform: translateY(-5px);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .skill-tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            margin: 0.25rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        .skill-tag.matched {
+            background-color: #10b981;
+            color: white;
+        }
+        .skill-tag.missing {
+            background-color: #ef4444;
+            color: white;
+        }
+        .progress-fill {
+            height: 100%;
+            border-radius: 9999px;
+            transition: width 0.5s ease;
+        }
+        .progress-fill.high { background-color: #10b981; }
+        .progress-fill.medium { background-color: #f59e0b; }
+        .progress-fill.low { background-color: #ef4444; }
+        .error-message {
+            background-color: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .analyzing-animation {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+        }
+        .pulse-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #667eea;
+            animation: pulse 1.5s infinite;
+            margin: 0 4px;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body class="bg-gray-50">
-    <!-- Navigation Header -->
-    <nav class="bg-white shadow-sm border-b border-gray-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
+    <!-- Main Container with Right Navigation -->
+    <div class="flex min-h-screen">
+        <!-- Main Content Area -->
+        <main class="flex-1">
+            <!-- Welcome Section -->
+            <div class="gradient-bg text-white py-12 px-8">
+                <div class="max-w-4xl">
+                    <h1 class="text-4xl font-bold mb-4">📊 SkillSync</h1>
+                    <p class="text-xl opacity-90">Transform Your Career with AI-Powered Resume Analysis</p>
+                </div>
+            </div>
+
+            <!-- Upload Section (Initially Visible) -->
+            <section id="upload-section" class="px-8 py-12">
+                <div class="max-w-2xl mx-auto">
+                    <div class="bg-white rounded-xl shadow-lg p-8 card-hover">
+                        <div class="text-center mb-8">
+                            <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-file-upload text-blue-600 text-3xl"></i>
+                            </div>
+                            <h2 class="text-3xl font-bold text-gray-900 mb-2">Upload Your Resume</h2>
+                            <p class="text-gray-600">Get personalized career insights and learning roadmap</p>
+                        </div>
+                        
+                        <!-- Upload Form -->
+                        <form id="upload-form" class="space-y-6">
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="user-name" class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                                    <input type="text" id="user-name" name="name" required 
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                           placeholder="Enter your full name">
+                                </div>
+                                
+                                <div>
+                                    <label for="user-email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                                    <input type="email" id="user-email" name="email" required 
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                           placeholder="Enter your email">
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label for="target-role" class="block text-sm font-medium text-gray-700 mb-2">Target Role</label>
+                                <select id="target-role" name="targetRole" 
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                                    <option value=>Select a role...</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label for="resume-upload" class="block text-sm font-medium text-gray-700 mb-2">Resume File (PDF/DOCX)</label>
+                                <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-400 transition-colors">
+                                    <input type="file" id="resume-upload" name="resume" accept=".pdf,.docx" required 
+                                           class="hidden" onchange="handleFileSelect(this)">
+                                    <label for="resume-upload" class="cursor-pointer">
+                                        <i class="fas fa-file-pdf text-4xl text-gray-400 mb-4"></i>
+                                        <p class="text-gray-600 font-medium text-lg">Click to upload resume</p>
+                                        <p class="text-sm text-gray-500 mt-2">PDF, DOCX (MAX. 5MB)</p>
+                                    </label>
+                                </div>
+                                <div id="fileInfo" class="hidden mt-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-file-alt text-blue-600 mr-3"></i>
+                                            <span class="text-sm text-gray-900" id="fileName">resume.pdf</span>
+                                        </div>
+                                        <button onclick="removeFile()" class="text-red-500 hover:text-red-700">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button type="button" id="upload-btn" 
+                                    class="w-full gradient-bg text-white py-4 px-6 rounded-lg hover:opacity-90 transition duration-300 font-medium text-lg">
+                                <span class="btn-text">
+                                    <i class="fas fa-rocket mr-2"></i>
+                                    Upload & Analyze Resume
+                                </span>
+                                <span class="btn-loading" style="display: none;">
+                                    <i class="fas fa-spinner fa-spin mr-2"></i>
+                                    Processing...
+                                </span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analyzing Section (Initially Hidden) -->
+            <section id="analyzing-section" class="px-8 py-12" style="display: none;">
+                <div class="max-w-2xl mx-auto">
+                    <div class="bg-white rounded-xl shadow-lg p-12 text-center">
+                        <div class="analyzing-animation">
+                            <div class="text-center">
+                                <div class="loading-spinner mb-8"></div>
+                                <h2 class="text-3xl font-bold text-gray-900 mb-4">Analyzing Your Resume</h2>
+                                <p class="text-gray-600 mb-8">Our AI is extracting skills, analyzing gaps, and creating your personalized roadmap</p>
+                                
+                                <div class="space-y-4">
+                                    <div class="flex items-center justify-center space-x-2">
+                                        <span class="pulse-dot"></span>
+                                        <span class="pulse-dot" style="animation-delay: 0.2s"></span>
+                                        <span class="pulse-dot" style="animation-delay: 0.4s"></span>
+                                        <span class="pulse-dot" style="animation-delay: 0.6s"></span>
+                                        <span class="pulse-dot" style="animation-delay: 0.8s"></span>
+                                    </div>
+                                    <p class="text-sm text-gray-500">This usually takes 10-30 seconds...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Section (Initially Hidden) -->
+            <section id="results-section" class="px-8 py-12" style="display: none;">
+                <div class="max-w-6xl mx-auto space-y-8">
+                    
+                    <!-- Skill Gap Analysis -->
+                    <div class="bg-white rounded-xl shadow-lg p-8 card-hover fade-in">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
+                                <i class="fas fa-chart-pie text-purple-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-2xl font-bold text-gray-900">Skill Gap Analysis</h2>
+                                <p class="text-gray-600 text-sm">Compare your skills against target role requirements</p>
+                            </div>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-2 gap-6 mb-6">
+                            <div class="progress-item">
+                                <h3 class="text-lg font-semibold mb-2 text-gray-700">Match Percentage</h3>
+                                <div id="match-progress" class="progress-bar bg-gray-200 rounded-full h-4 relative">
+                                    <div class="progress-fill h-full rounded-full"></div>
+                                    <span class="percentage-text absolute inset-0 flex items-center justify-center text-sm font-medium">0%</span>
+                                </div>
+                            </div>
+                            
+                            <div class="progress-item">
+                                <h3 class="text-lg font-semibold mb-2 text-gray-700">Skill Gap</h3>
+                                <div id="gap-progress" class="progress-bar bg-gray-200 rounded-full h-4 relative">
+                                    <div class="progress-fill h-full rounded-full"></div>
+                                    <span class="percentage-text absolute inset-0 flex items-center justify-center text-sm font-medium">0%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-6 mb-6">
+                            <div class="skills-group">
+                                <h3 class="text-lg font-semibold mb-3 text-gray-700 flex items-center">
+                                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                    Matched Skills
+                                </h3>
+                                <div id="matched-skills" class="skills-list"></div>
+                            </div>
+                            
+                            <div class="skills-group">
+                                <h3 class="text-lg font-semibold mb-3 text-gray-700 flex items-center">
+                                    <i class="fas fa-times-circle text-red-500 mr-2"></i>
+                                    Missing Skills
+                                </h3>
+                                <div id="missing-skills" class="skills-list"></div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div class="metric-item bg-gray-50 p-3 rounded-lg">
+                                <label class="block text-sm font-medium text-gray-600">Skill Level</label>
+                                <span id="skill-level" class="metric-value text-lg font-semibold text-gray-800">-</span>
+                            </div>
+                            <div class="metric-item bg-gray-50 p-3 rounded-lg">
+                                <label class="block text-sm font-medium text-gray-600">Readiness Score</label>
+                                <span id="readiness-score" class="metric-value text-lg font-semibold text-gray-800">-</span>
+                            </div>
+                            <div class="metric-item bg-gray-50 p-3 rounded-lg">
+                                <label class="block text-sm font-medium text-gray-600">Total Matched</label>
+                                <span id="total-matched" class="metric-value text-lg font-semibold text-gray-800">-</span>
+                            </div>
+                            <div class="metric-item bg-gray-50 p-3 rounded-lg">
+                                <label class="block text-sm font-medium text-gray-600">Total Missing</label>
+                                <span id="total-missing" class="metric-value text-lg font-semibold text-gray-800">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Learning Roadmap -->
+                    <div class="bg-white rounded-xl shadow-lg p-8 card-hover fade-in">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mr-4">
+                                <i class="fas fa-route text-orange-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-2xl font-bold text-gray-900">Personalized Learning Roadmap</h2>
+                                <p class="text-gray-600 text-sm">Step-by-step guide to bridge your skill gaps</p>
+                            </div>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-2 gap-4 mb-6">
+                            <div class="summary-item bg-indigo-50 p-4 rounded-lg">
+                                <label class="block text-sm font-medium text-indigo-600">Total Duration</label>
+                                <span id="total-duration" class="summary-value text-lg font-semibold text-indigo-800">-</span>
+                            </div>
+                            <div class="summary-item bg-indigo-50 p-4 rounded-lg">
+                                <label class="block text-sm font-medium text-indigo-600">Total Steps</label>
+                                <span id="total-steps" class="summary-value text-lg font-semibold text-indigo-800">-</span>
+                            </div>
+                        </div>
+
+                        <div id="roadmap-container" class="roadmap-steps space-y-4">
+                            <!-- Roadmap steps will be dynamically inserted here -->
+                        </div>
+                    </div>
+
+                    <!-- Role Suggestions -->
+                    <div class="bg-white rounded-xl shadow-lg p-8 card-hover fade-in">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mr-4">
+                                <i class="fas fa-lightbulb text-yellow-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-2xl font-bold text-gray-900">Alternative Career Suggestions</h2>
+                                <p class="text-gray-600 text-sm">Discover roles that match your current skills</p>
+                            </div>
+                        </div>
+                        <div id="suggestions-container" class="suggestions-list grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <!-- Role suggestions will be dynamically inserted here -->
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Error Message -->
+            <div id="error-message" class="error-message mx-8" style="display: none;">
                 <div class="flex items-center">
-                    <button onclick="goBack()" class="mr-4 text-gray-500 hover:text-gray-700 transition-colors hidden">
-                        <i class="fas fa-arrow-left text-xl"></i>
+                    <span class="error-icon mr-2">⚠️</span>
+                    <span class="error-text"></span>
+                </div>
+                <button class="error-close ml-4 text-gray-500 hover:text-gray-700" onclick="api.hideError()">×</button>
+            </div>
+        </main>
+
+        <!-- Right Sidebar Navigation -->
+        <aside class="w-80 bg-white shadow-lg border-l border-gray-200">
+            <div class="p-6">
+                <!-- User Profile Section -->
+                <div id="user-profile" class="mb-8" style="display: none;">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-gradient-bg rounded-full flex items-center justify-center">
+                            <span id="user-avatar" class="text-white font-bold text-lg">U</span>
+                        </div>
+                        <div>
+                            <h3 id="user-display-name" class="font-semibold text-gray-900">User Name</h3>
+                            <p id="user-display-email" class="text-sm text-gray-600">user@example.com</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Menu -->
+                <nav class="space-y-2">
+                    <div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">Navigation</div>
+                    
+                    <button id="nav-upload" class="w-full text-left px-3 py-2 rounded-lg bg-indigo-50 text-indigo-600 font-medium hover:bg-indigo-100 transition-colors">
+                        Upload Resume
                     </button>
-                    <div class="flex-shrink-0">
-                        <h1 class="text-2xl font-bold text-transparent bg-clip-text gradient-bg">SkillSync</h1>
-                    </div>
-                </div>
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-4">
-                        <a href="index.html" class="text-gray-900 hover:text-purple-600 px-3 py-2 rounded-md text-sm font-medium">Home</a>
-                        <a href="dashboard.html" class="text-gray-500 hover:text-purple-600 px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
-                    </div>
-                </div>
-                <div class="md:hidden">
-                    <button onclick="toggleMobileMenu()" class="text-gray-500 hover:text-gray-900 focus:outline-none">
-                        <i class="fas fa-bars text-xl"></i>
+                    
+                    <button id="nav-results" class="w-full text-left px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors" style="display: none;">
+                        View Results
                     </button>
-                </div>
-            </div>
-        </div>
-        <!-- Mobile menu -->
-        <div id="mobileMenu" class="hidden md:hidden">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="index.html" class="text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Home</a>
-                <a href="dashboard.html" class="text-gray-500 block px-3 py-2 rounded-md text-base font-medium">Dashboard</a>
-            </div>
-        </div>
-    </nav>
+                    
+                    <button id="nav-new-analysis" class="w-full text-left px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors" style="display: none;">
+                        New Analysis
+                    </button>
+                    <button id="nav-community" 
+                        class="w-full text-left px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
+                    >
+                        Community
+                    </button>
+                    <button id="nav-industry" 
+                        class="w-full text-left px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
+                    >
+                        Industry Insights
+                    </button>
+                </nav>
 
-    <!-- Hero Section -->
-    <main class="flex-grow">
-        <div class="relative">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-                <div class="text-center">
-                    <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-                        Transform Your Career with
-                        <span class="text-transparent bg-clip-text gradient-bg">AI-Powered</span>
-                        <br>Resume Analysis
-                    </h1>
-                    <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-                        Upload your resume, analyze skill gaps, get personalized learning roadmaps, and discover career opportunities tailored to your expertise.
-                    </p>
-                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                        <button onclick="navigateToDashboard()" class="gradient-bg text-white px-8 py-4 rounded-lg text-lg font-semibold hover:opacity-90 transition duration-300 shadow-lg">
-                            <i class="fas fa-rocket mr-2"></i>
-                            Get Started
+                <!-- Quick Stats -->
+                <div class="mt-8">
+                    <div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">Quick Stats</div>
+                    <div class="mt-4 space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Available Roles</span>
+                            <span class="font-semibold text-gray-900" id="availableRoles">11</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Skills Found</span>
+                            <span class="font-semibold text-gray-900" id="skillsFound">-</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Match Score</span>
+                            <span class="font-semibold text-gray-900" id="matchScore">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Help Section -->
+                <div class="mt-8">
+                    <div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">Help</div>
+                    <div class="mt-4 space-y-2">
+                        <button class="w-full text-left px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors text-sm">
+                            How it Works
                         </button>
-                        <button onclick="scrollToFeatures()" class="bg-white text-purple-600 border-2 border-purple-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-purple-50 transition duration-300">
-                            <i class="fas fa-info-circle mr-2"></i>
-                            Learn More
+                        <button class="w-full text-left px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors text-sm">
+                            Documentation
                         </button>
                     </div>
                 </div>
             </div>
-        </div>
+        </aside>
+    </div>
 
-        <!-- Features Section -->
-        <div id="features" class="py-20 bg-white">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Everything You Need for Career Growth</h2>
-                    <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                        Our comprehensive platform helps you identify opportunities, bridge skill gaps, and accelerate your career development.
-                    </p>
-                </div>
-
-                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    <!-- Feature 1 -->
-                    <div class="text-center card-hover bg-gray-50 p-6 rounded-xl">
-                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-file-upload text-blue-600 text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Smart Resume Upload</h3>
-                        <p class="text-gray-600">Upload PDF, DOC, or images. Our AI extracts and analyzes your skills automatically.</p>
-                    </div>
-
-                    <!-- Feature 2 -->
-                    <div class="text-center card-hover bg-gray-50 p-6 rounded-xl">
-                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-chart-line text-green-600 text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Skill Gap Analysis</h3>
-                        <p class="text-gray-600">Compare your skills against job requirements and identify areas for improvement.</p>
-                    </div>
-
-                    <!-- Feature 3 -->
-                    <div class="text-center card-hover bg-gray-50 p-6 rounded-xl">
-                        <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-route text-yellow-600 text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Learning Roadmaps</h3>
-                        <p class="text-gray-600">Get personalized step-by-step learning plans to bridge your skill gaps.</p>
-                    </div>
-
-                    <!-- Feature 4 -->
-                    <div class="text-center card-hover bg-gray-50 p-6 rounded-xl">
-                        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-briefcase text-purple-600 text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Career Suggestions</h3>
-                        <p class="text-gray-600">Discover job roles and career paths that match your skill set and aspirations.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- How It Works -->
-        <div class="py-20 bg-gray-50">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">How It Works</h2>
-                    <p class="text-xl text-gray-600">Get started in minutes with our simple 4-step process</p>
-                </div>
-
-                <div class="grid md:grid-cols-4 gap-8">
-                    <div class="text-center">
-                        <div class="w-12 h-12 bg-purple-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">1</div>
-                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Upload Resume</h3>
-                        <p class="text-gray-600">Upload your resume in any format</p>
-                    </div>
-                    <div class="text-center">
-                        <div class="w-12 h-12 bg-purple-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">2</div>
-                        <h3 class="text-lg font-semibold text-gray-900 mb-2">AI Analysis</h3>
-                        <p class="text-gray-600">Our AI extracts skills and analyzes gaps</p>
-                    </div>
-                    <div class="text-center">
-                        <div class="w-12 h-12 bg-purple-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">3</div>
-                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Get Insights</h3>
-                        <p class="text-gray-600">Receive detailed analysis and recommendations</p>
-                    </div>
-                    <div class="text-center">
-                        <div class="w-12 h-12 bg-purple-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">4</div>
-                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Take Action</h3>
-                        <p class="text-gray-600">Follow your personalized roadmap to success</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <h3 class="text-2xl font-bold text-transparent bg-clip-text gradient-bg mb-2">SkillSync</h3>
-                <p class="text-gray-400">Empowering careers through AI-driven insights</p>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobileMenu');
-            menu.classList.toggle('hidden');
-        }
-
-        function navigateToDashboard() {
-            window.location.href = 'dashboard.html';
-        }
-
-        function scrollToFeatures() {
-            document.getElementById('features').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function goBack() {
-            if (window.history.length > 1) {
-                window.history.back();
-            } else {
-                // If no history, stay on home page (no action needed)
-                console.log('Already on home page');
-            }
-        }
-    </script>
+    <!-- JavaScript -->
+    <script src="frontend-api-integration.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>

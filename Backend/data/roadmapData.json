@@ -1,0 +1,387 @@
+{
+  "javascript": {
+    "skill": "JavaScript",
+    "level": "Beginner to Advanced",
+    "duration": "3-6 months",
+    "resources": [
+      {
+        "type": "online_course",
+        "title": "JavaScript: The Complete Guide 2024",
+        "provider": "Udemy",
+        "url": "https://www.udemy.com/course/the-complete-javascript-course/",
+        "difficulty": "Beginner"
+      },
+      {
+        "type": "documentation",
+        "title": "MDN JavaScript Guide",
+        "provider": "Mozilla",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+        "difficulty": "All Levels"
+      },
+      {
+        "type": "practice",
+        "title": "JavaScript Challenges",
+        "provider": "Codewars",
+        "url": "https://www.codewars.com/",
+        "difficulty": "Progressive"
+      },
+      {
+        "type": "book",
+        "title": "Eloquent JavaScript",
+        "provider": "Marijn Haverbeke",
+        "url": "https://eloquentjavascript.net/",
+        "difficulty": "Intermediate"
+      }
+    ],
+    "steps": [
+      "Learn basic syntax and data types",
+      "Understand functions and scope",
+      "Master DOM manipulation",
+      "Learn async/await and promises",
+      "Practice with real projects"
+    ]
+  },
+  "react": {
+    "skill": "React",
+    "level": "Intermediate",
+    "duration": "2-4 months",
+    "resources": [
+      {
+        "type": "online_course",
+        "title": "React - The Complete Guide",
+        "provider": "Udemy",
+        "url": "https://www.udemy.com/course/react-the-complete-guide-incl-redux/",
+        "difficulty": "Intermediate"
+      },
+      {
+        "type": "documentation",
+        "title": "React Official Documentation",
+        "provider": "React",
+        "url": "https://react.dev/",
+        "difficulty": "All Levels"
+      },
+      {
+        "type": "practice",
+        "title": "React Projects",
+        "provider": "FreeCodeCamp",
+        "url": "https://www.freecodecamp.org/learn/front-end-development-libraries/",
+        "difficulty": "Intermediate"
+      }
+    ],
+    "steps": [
+      "Master JSX syntax",
+      "Understand components and props",
+      "Learn state management",
+      "Master hooks (useState, useEffect)",
+      "Build real applications"
+    ]
+  },
+  "nodejs": {
+    "skill": "Node.js",
+    "level": "Intermediate",
+    "duration": "2-3 months",
+    "resources": [
+      {
+        "type": "online_course",
+        "title": "Node.js - The Complete Guide",
+        "provider": "Udemy",
+        "url": "https://www.udemy.com/course/nodejs-the-complete-guide/",
+        "difficulty": "Intermediate"
+      },
+      {
+        "type": "documentation",
+        "title": "Node.js Official Docs",
+        "provider": "Node.js",
+        "url": "https://nodejs.org/docs/",
+        "difficulty": "All Levels"
+      }
+    ],
+    "steps": [
+      "Understand Node.js runtime",
+      "Learn modules and require",
+      "Master file system operations",
+      "Build REST APIs with Express",
+      "Learn authentication and security"
+    ]
+  },
+  "python": {
+    "skill": "Python",
+    "level": "Beginner to Advanced",
+    "duration": "3-6 months",
+    "resources": [
+      {
+        "type": "online_course",
+        "title": "Python for Everybody",
+        "provider": "Coursera",
+        "url": "https://www.coursera.org/learn/python",
+        "difficulty": "Beginner"
+      },
+      {
+        "type": "documentation",
+        "title": "Python Official Tutorial",
+        "provider": "Python",
+        "url": "https://docs.python.org/3/tutorial/",
+        "difficulty": "All Levels"
+      }
+    ],
+    "steps": [
+      "Learn basic syntax and data types",
+      "Master control flow and functions",
+      "Understand object-oriented programming",
+      "Learn popular libraries (NumPy, Pandas)",
+      "Build data analysis projects"
+    ]
+  },
+  "docker": {
+    "skill": "Docker",
+    "level": "Intermediate",
+    "duration": "1-2 months",
+    "resources": [
+      {
+        "type": "online_course",
+        "title": "Docker & Kubernetes: The Practical Guide",
+        "provider": "Udemy",
+        "url": "https://www.udemy.com/course/docker-kubernetes-the-practical-guide/",
+        "difficulty": "Intermediate"
+      },
+      {
+        "type": "documentation",
+        "title": "Docker Official Documentation",
+        "provider": "Docker",
+        "url": "https://docs.docker.com/",
+        "difficulty": "All Levels"
+      }
+    ],
+    "steps": [
+      "Understand containerization concepts",
+      "Learn Dockerfile syntax",
+      "Master Docker Compose",
+      "Practice with multi-container apps",
+      "Deploy to production"
+    ]
+  },
+  "aws": {
+    "skill": "AWS",
+    "level": "Intermediate",
+    "duration": "3-4 months",
+    "resources": [
+      {
+        "type": "certification",
+        "title": "AWS Cloud Practitioner",
+        "provider": "Amazon",
+        "url": "https://aws.amazon.com/certification/certified-cloud-practitioner/",
+        "difficulty": "Beginner"
+      },
+      {
+        "type": "online_course",
+        "title": "AWS Solutions Architect",
+        "provider": "Udemy",
+        "url": "https://www.udemy.com/course/aws-certified-solutions-architect-associate/",
+        "difficulty": "Intermediate"
+      }
+    ],
+    "steps": [
+      "Learn core AWS services",
+      "Master EC2 and S3",
+      "Understand VPC and networking",
+      "Learn Lambda and serverless",
+      "Practice with real projects"
+    ]
+  },
+  "mongodb": {
+    "skill": "MongoDB",
+    "level": "Beginner to Intermediate",
+    "duration": "1-2 months",
+    "resources": [
+      {
+        "type": "online_course",
+        "title": "MongoDB - The Complete Developer's Guide",
+        "provider": "Udemy",
+        "url": "https://www.udemy.com/course/mongodb-the-complete-developers-guide/",
+        "difficulty": "Beginner"
+      },
+      {
+        "type": "documentation",
+        "title": "MongoDB University",
+        "provider": "MongoDB",
+        "url": "https://university.mongodb.com/",
+        "difficulty": "All Levels"
+      }
+    ],
+    "steps": [
+      "Understand NoSQL concepts",
+      "Learn MongoDB query syntax",
+      "Master aggregation framework",
+      "Learn indexing and performance",
+      "Build applications with Mongoose"
+    ]
+  },
+  "typescript": {
+    "skill": "TypeScript",
+    "level": "Intermediate",
+    "duration": "1-2 months",
+    "resources": [
+      {
+        "type": "online_course",
+        "title": "Understanding TypeScript",
+        "provider": "Udemy",
+        "url": "https://www.udemy.com/course/understanding-typescript/",
+        "difficulty": "Intermediate"
+      },
+      {
+        "type": "documentation",
+        "title": "TypeScript Handbook",
+        "provider": "TypeScript",
+        "url": "https://www.typescriptlang.org/docs/handbook/intro.html",
+        "difficulty": "All Levels"
+      }
+    ],
+    "steps": [
+      "Learn type system basics",
+      "Master interfaces and types",
+      "Understand generics",
+      "Learn advanced types",
+      "Migrate JavaScript projects"
+    ]
+  },
+  "git": {
+    "skill": "Git",
+    "level": "Beginner to Intermediate",
+    "duration": "1-2 months",
+    "resources": [
+      {
+        "type": "interactive",
+        "title": "Learn Git Branching",
+        "provider": "Atlassian",
+        "url": "https://learngitbranching.js.org/",
+        "difficulty": "Beginner"
+      },
+      {
+        "type": "documentation",
+        "title": "Pro Git Book",
+        "provider": "Git",
+        "url": "https://git-scm.com/book/en/v2",
+        "difficulty": "All Levels"
+      }
+    ],
+    "steps": [
+      "Learn basic commands (add, commit, push)",
+      "Understand branching and merging",
+      "Master remote repositories",
+      "Learn conflict resolution",
+      "Practice with team workflows"
+    ]
+  },
+  "css": {
+    "skill": "CSS",
+    "level": "Beginner to Advanced",
+    "duration": "2-4 months",
+    "resources": [
+      {
+        "type": "online_course",
+        "title": "Advanced CSS and Sass",
+        "provider": "Udemy",
+        "url": "https://www.udemy.com/course/advanced-css-and-sass/",
+        "difficulty": "Intermediate"
+      },
+      {
+        "type": "documentation",
+        "title": "MDN CSS Guide",
+        "provider": "Mozilla",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS",
+        "difficulty": "All Levels"
+      }
+    ],
+    "steps": [
+      "Master selectors and specificity",
+      "Learn Flexbox and Grid",
+      "Understand responsive design",
+      "Master animations and transitions",
+      "Learn modern CSS frameworks"
+    ]
+  },
+  "network_security": {
+    "skill": "Network Security",
+    "level": "Intermediate",
+    "duration": "3-4 months",
+    "resources": [
+      {
+        "type": "certification",
+        "title": "CompTIA Security+",
+        "provider": "CompTIA",
+        "url": "https://www.comptia.org/certifications/security",
+        "difficulty": "Intermediate"
+      },
+      {
+        "type": "online_course",
+        "title": "Network Security Fundamentals",
+        "provider": "Coursera",
+        "url": "https://www.coursera.org/learn/network-security",
+        "difficulty": "Beginner"
+      }
+    ],
+    "steps": [
+      "Understand network protocols and architecture",
+      "Learn firewall configuration and management",
+      "Master intrusion detection systems",
+      "Study VPN and secure network design",
+      "Practice network security monitoring"
+    ]
+  },
+  "penetration_testing": {
+    "skill": "Penetration Testing",
+    "level": "Advanced",
+    "duration": "4-6 months",
+    "resources": [
+      {
+        "type": "certification",
+        "title": "CEH - Certified Ethical Hacker",
+        "provider": "EC-Council",
+        "url": "https://www.eccouncil.org/programs/certified-ethical-hacker-ceh/",
+        "difficulty": "Advanced"
+      },
+      {
+        "type": "practice",
+        "title": "Hack The Box",
+        "provider": "Hack The Box",
+        "url": "https://www.hackthebox.com/",
+        "difficulty": "Advanced"
+      }
+    ],
+    "steps": [
+      "Learn ethical hacking methodologies",
+      "Master reconnaissance techniques",
+      "Study vulnerability assessment tools",
+      "Practice exploitation techniques",
+      "Learn report writing and documentation"
+    ]
+  },
+  "risk_assessment": {
+    "skill": "Risk Assessment",
+    "level": "Intermediate",
+    "duration": "2-3 months",
+    "resources": [
+      {
+        "type": "certification",
+        "title": "CISSP",
+        "provider": "ISC2",
+        "url": "https://www.isc2.org/Certifications/CISSP/",
+        "difficulty": "Advanced"
+      },
+      {
+        "type": "documentation",
+        "title": "NIST Risk Management Framework",
+        "provider": "NIST",
+        "url": "https://www.nist.gov/itl",
+        "difficulty": "Intermediate"
+      }
+    ],
+    "steps": [
+      "Understand risk management frameworks",
+      "Learn asset identification and classification",
+      "Master threat and vulnerability analysis",
+      "Study risk mitigation strategies",
+      "Practice risk assessment reporting"
+    ]
+  }
+}
