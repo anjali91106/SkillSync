@@ -3,7 +3,7 @@
 
 class ResumeAnalysisAPI {
   constructor() {
-    this.baseURL = 'http://localhost:3000/api/resume';
+    this.baseURL = 'https://skillsync-3-hgmq.onrender.com/api/resume';
     this.loading = false;
     this.error = null;
   }
