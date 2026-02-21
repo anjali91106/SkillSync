@@ -44,13 +44,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(express.static('public'));
 app.use(express.static('media'));
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://anjalisoni86904_db_user:IBswGX2rZLj0aMCG@cluster0.zenu8iw.mongodb.net/?appName=Cluster0', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  maxPoolSize: 10,
-  serverSelectionTimeoutMS: 5000,
-  socketTimeoutMS: 45000,
-})
+mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://anjalisoni86904_db_user:IBswGX2rZLj0aMCG@cluster0.zenu8iw.mongodb.net/?appName=Cluster0')
 .then(() => console.log('Connected to MongoDB'))
 .catch(err => {
   console.error('MongoDB connection error:', err);
